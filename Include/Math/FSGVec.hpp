@@ -9,9 +9,9 @@ public:
     f32 m_z;
     f32 m_w;
 
-    f32 Length2();
-    f32 Length3();
-    f32 Length4();
+    f32 Length2() const;
+    f32 Length3() const;
+    f32 Length4() const;
 
     bool operator!=(const class CVec &t_vec);
     const class CVec &operator/=(const f32 &t_factor);

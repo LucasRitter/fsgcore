@@ -9,15 +9,15 @@ CVec::CVec() {
     m_w = 0.0;
 }
 
-f32 CVec::Length2() {
+f32 CVec::Length2() const {
     return FSGSqrt(m_x * m_x + m_y * m_y);
 }
 
-f32 CVec::Length3() {
+f32 CVec::Length3() const {
     return FSGSqrt(m_x * m_x + m_y * m_y + m_z * m_z);
 }
 
-f32 CVec::Length4() {
+f32 CVec::Length4() const {
     return FSGSqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
 }
 
