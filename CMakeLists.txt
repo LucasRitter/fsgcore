@@ -17,4 +17,4 @@ file(GLOB_RECURSE FSGCORE_LINUX ${CMAKE_SOURCE_DIR} "Source/**/Linux/*.cpp")
 
 
 # Building
-add_library(fsgcore SHARED ${FSGCORE} ${FSGCORE_WIN})
+add_library(fsgcore SHARED ${FSGCORE} ${FSGCORE_WIN} ${FSGCORE_LINUX})
