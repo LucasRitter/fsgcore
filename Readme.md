@@ -1,0 +1,1 @@
+![fsg core - freestyle games core library](.media/fsgcore.svg)
