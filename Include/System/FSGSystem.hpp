@@ -18,7 +18,7 @@ namespace FSGSystem {
         u16 m_month;
         u16 m_year;
 
-        static int CompareDates(const FSGSystem::SFSGTimeAndDate &t_date_a, const FSGSystem::SFSGTimeAndDate &t_date_b);
+        static int CompareDates(const FSGSystem::SFSGTimeAndDate &t_dateA, const FSGSystem::SFSGTimeAndDate &t_dateB);
 
         bool operator<(const FSGSystem::SFSGTimeAndDate &t_date) const;
     };
@@ -31,11 +31,11 @@ namespace FSGSystem {
     void FSGGetTimeAndDate(FSGSystem::SFSGTimeAndDate &t_date);
 
     /**
-     * Fills the given @b t_build_date with the build time and date.
-     * @param t_build_date The structure to fill.
+     * Fills the given @b t_buildDate with the build time and date.
+     * @param t_buildDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetBuildDateAndTime(FSGSystem::SFSGTimeAndDate &t_build_date);
+    void FSGGetBuildDateAndTime(FSGSystem::SFSGTimeAndDate &t_buildDate);
 
 #pragma endregion
 
@@ -105,7 +105,7 @@ namespace FSGSystem {
     /**
      * Unused.
      */
-    void *FSGCameraGetVideoBuffer(void *t_video_buffer);
+    void *FSGCameraGetVideoBuffer(void *t_videoBuffer);
 
     /**
      * Unused.

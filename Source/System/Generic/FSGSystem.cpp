@@ -4,14 +4,14 @@
 
 #pragma region Time and Date
 
-int FSGSystem::SFSGTimeAndDate::CompareDates(const FSGSystem::SFSGTimeAndDate &t_date_a,
-                                             const FSGSystem::SFSGTimeAndDate &t_date_b) {
-    if (t_date_a.m_year != t_date_b.m_year
-        || t_date_a.m_month != t_date_b.m_month
-        || t_date_a.m_day != t_date_b.m_day
-        || t_date_a.m_hour != t_date_b.m_hour
-        || t_date_a.m_minutes != t_date_b.m_minutes
-        || t_date_a.m_seconds != t_date_b.m_seconds) {
+int FSGSystem::SFSGTimeAndDate::CompareDates(const FSGSystem::SFSGTimeAndDate &t_dateA,
+                                             const FSGSystem::SFSGTimeAndDate &t_dateB) {
+    if (t_dateA.m_year != t_dateB.m_year
+        || t_dateA.m_month != t_dateB.m_month
+        || t_dateA.m_day != t_dateB.m_day
+        || t_dateA.m_hour != t_dateB.m_hour
+        || t_dateA.m_minutes != t_dateB.m_minutes
+        || t_dateA.m_seconds != t_dateB.m_seconds) {
         return 0;
     }
 
@@ -58,7 +58,7 @@ void FSGSystem::FSGGetTimeAndDate(FSGSystem::SFSGTimeAndDate &t_date) {
 }
 
 
-void FSGSystem::FSGGetBuildDateAndTime(FSGSystem::SFSGTimeAndDate &t_build_date) {
+void FSGSystem::FSGGetBuildDateAndTime(FSGSystem::SFSGTimeAndDate &t_buildDate) {
     // Todo: FSGSystem::FSGGetBuildTimeAndDate
 }
 
