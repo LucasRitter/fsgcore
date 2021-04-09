@@ -18,9 +18,9 @@ namespace FSGSystem {
         u16 m_month;
         u16 m_year;
 
-        static int CompareDates(const FSGSystem::SFSGTimeAndDate &t_dateA, const FSGSystem::SFSGTimeAndDate &t_dateB);
+        static int CompareDates(const SFSGTimeAndDate &t_dateA, const SFSGTimeAndDate &t_dateB);
 
-        bool operator<(const FSGSystem::SFSGTimeAndDate &t_date) const;
+        bool operator<(const SFSGTimeAndDate &t_date) const;
     };
 
     /**
@@ -28,14 +28,14 @@ namespace FSGSystem {
      * @param t_date The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetTimeAndDate(FSGSystem::SFSGTimeAndDate &t_date);
+    void FSGGetTimeAndDate(SFSGTimeAndDate &t_date);
 
     /**
      * Fills the given @b t_buildDate with the build time and date.
      * @param t_buildDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetBuildDateAndTime(FSGSystem::SFSGTimeAndDate &t_buildDate);
+    void FSGGetBuildDateAndTime(SFSGTimeAndDate &t_buildDate);
 
 #pragma endregion
 
