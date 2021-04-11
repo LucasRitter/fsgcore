@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Primitives.hpp"
+#include <Primitives.hpp>
 
 namespace FSGSystem {
 #pragma region Time and Date

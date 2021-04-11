@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Primitives.hpp"
+#include <Primitives.hpp>
 
 class CString {
 protected:
