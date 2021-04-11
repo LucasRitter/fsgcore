@@ -24,3 +24,5 @@ typedef double f64;
 #pragma region Text
 typedef char * string;
 typedef char const * static_string;
+typedef char character;
+#pragma endregion
