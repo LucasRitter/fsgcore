@@ -12,6 +12,16 @@ protected:
 
 public:
     /**
+     * @return The length of the string.
+     */
+    u32 GetLength() const;
+
+    /**
+     * @return The buffer of the string.
+     */
+    string GetBuffer() const;
+
+    /**
      * Clears the string.
      */
     void Clear();

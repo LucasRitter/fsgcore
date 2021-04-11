@@ -10,6 +10,14 @@ CString::CString() {
     m_length = 0;
 }
 
+u32 CString::GetLength() const {
+    return this->m_length;
+}
+
+string CString::GetBuffer() const {
+    return this->m_buffer;
+}
+
 void CString::Clear() {
     FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
 
@@ -246,4 +254,13 @@ void CString::ToLower() {
             this->m_buffer[i] += 0x20;
         }
     }
+}
+
+void CString::StringCopy(string t_target, u32 t_targetCapacity, static_string t_source) {
+    auto sourceLength = strlen(t_source);
+
+    FSG_ASSERT(sourceLength < t_targetCapacity, "Source string is longer than target capacity.");
+
+    strncpy_s(t_target, t_targetCapacity, t_source, t_targetCapacity);
+    t_target[t_targetCapacity - 1] = 0;
 }
