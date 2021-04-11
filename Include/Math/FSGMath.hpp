@@ -5,7 +5,7 @@
  * @param t_x Number.
  * @return The square root of @b t_x.
  */
-f64 FSGSqrt(const f32 &t_x);
+f32 FSGSqrt(const f32 &t_x);
 
 /**
  * @param t_x Number.
