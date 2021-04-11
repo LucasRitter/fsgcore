@@ -1,4 +1,4 @@
-#include "Core/FSGAssert.hpp"
+#include <Core/FSGAssert.hpp>
 
 #include <cstdio>
 #include <cstdarg>

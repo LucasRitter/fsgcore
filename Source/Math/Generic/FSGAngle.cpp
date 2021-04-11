@@ -1,5 +1,5 @@
 #include <cmath>
-#include "Math/FSGAngle.hpp"
+#include <Math/FSGAngle.hpp>
 
 f32 FSGSin(const f32 &t_x) {
     return sin(static_cast<f64>(t_x));

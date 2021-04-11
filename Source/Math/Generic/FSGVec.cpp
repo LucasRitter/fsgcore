@@ -1,6 +1,6 @@
 #include <Math/FSGMath.hpp>
-#include "Core/FSGAssert.hpp"
-#include "Math/FSGVec.hpp"
+#include <Core/FSGAssert.hpp>
+#include <Math/FSGVec.hpp>
 
 CVec::CVec() {
     m_x = 0.0;
