@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include <Collections/FSGString.hpp>
+#include <Core/FSGAssert.hpp>
 
 template <u32 t_size>
 class CFixedString: public CString {
