@@ -261,6 +261,6 @@ void CString::StringCopy(string t_target, u32 t_targetCapacity, static_string t_
 
     FSG_ASSERT(sourceLength < t_targetCapacity, "Source string is longer than target capacity.");
 
-    strncpy_s(t_target, t_targetCapacity, t_source, t_targetCapacity);
+    strncpy_s(t_target, t_targetCapacity, t_source, t_targetCapacity - 1);
     t_target[t_targetCapacity - 1] = 0;
 }

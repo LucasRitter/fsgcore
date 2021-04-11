@@ -6,7 +6,7 @@
 #include <Collections/FSGString.hpp>
 
 template <u32 t_size>
-class CFixedString: CString {
+class CFixedString: public CString {
 public:
     /**
      * Creates a new instance of a fixed length string from @b t_string.
@@ -48,12 +48,19 @@ public:
 
     // Todo: Write documentation for CFixedString::Append
     void Append(const class CString &t_string) override {
-        // Todo: Implement CFixedString::Append
+        auto totalLength = this->m_length + t_string.GetLength() + 1;
+        FSG_ASSERT(totalLength <= this->m_capacity, "String being added is too long to fit into available buffer.");
+        CString::StringCopy(&this->m_buffer[this->m_length], this->m_capacity, t_string.GetBuffer());
+        this->m_length += t_string.GetLength();
     }
 
     // Todo: Write documentation for CFixedString::Append
     void Append(static_string t_string) override {
-        // Todo: Implement CFixedString::Append
+        auto stringLength = strlen(t_string);
+        auto totalLength = this->m_length + stringLength + 1;
+        FSG_ASSERT(totalLength <= this->m_capacity, "String being added is too long to fit into available buffer.");
+        CString::StringCopy(&this->m_buffer[this->m_length], this->m_capacity - this->m_length, t_string);
+        this->m_length += stringLength;
     }
 
     // Todo: Write documentation for CFixedString::Format
