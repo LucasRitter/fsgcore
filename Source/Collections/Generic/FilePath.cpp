@@ -34,7 +34,10 @@ void CFilePath::GetFileExtension(const CString &t_string) {
     auto index = t_string.ReverseFind('.', 0);
     auto length = t_string.GetLength() - (index + 1);
 
-    if (index == -1 || length <= 0) {
+    // This check isn't in the original implementation, but is a nice-to-have.
+    auto lastDirIndex = t_string.ReverseFind('\\', 0);
+
+    if (index == -1 || length <= 0 || lastDirIndex > index) {
         this->Clear();
     } else {
         this->Extract(t_string, index + 1, length);
@@ -45,7 +48,10 @@ CFilePath *CFilePath::GetFileExtension() {
     auto index = this->ReverseFind('.', 0);
     auto length = this->GetLength() - (index + 1);
 
-    if (index == -1) {
+    // This check isn't in the original implementation, but is a nice-to-have.
+    auto lastDirIndex = this->ReverseFind('\\', 0);
+
+    if (index == -1 || lastDirIndex > index) {
         return nullptr;
     }
 
