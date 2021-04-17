@@ -64,6 +64,21 @@ public:
         this->m_length += stringLength;
     }
 
+    // Todo: Write documentation for CFixedString::Extract
+    void Extract(const class CString &t_string, i32 t_offset, i32 t_length) {
+        FSG_ASSERT(t_offset >= 0 && t_offset < t_string.GetLength(), "Extraction point is outside the bounds of the source string.");
+        FSG_ASSERT(t_length >= 0, "Negative extraction lengths are not supported.");
+        FSG_ASSERT(t_offset + t_length <= t_string.GetLength(), "Extracted string extends beyond the bounds of the source string.");
+        FSG_ASSERT(t_length < this->m_capacity, "Extracted string is too large to fit into the target buffer.");
+
+        auto source = (static_string) t_string;
+        for (auto i = 0; i < t_length; i++) {
+            this->m_buffer[i] = source[i + t_offset];
+        }
+        this->m_buffer[t_length] = 0;
+        this->m_length = t_length;
+    }
+
     // Todo: Write documentation for CFixedString::Format
     void Format(static_string t_format, ...) override {
         // Todo: Implement CFixedString::Format
