@@ -6,15 +6,15 @@ class CString {
 protected:
     bool m_static;
     string m_buffer;
-    u32 m_capacity;
-    u32 m_length;
+    i32 m_capacity;
+    i32 m_length;
     CString();
 
 public:
     /**
      * @return The length of the string.
      */
-    u32 GetLength() const;
+    i32 GetLength() const;
 
     /**
      * @return The buffer of the string.

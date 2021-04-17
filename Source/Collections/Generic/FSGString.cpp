@@ -10,7 +10,7 @@ CString::CString() {
     m_length = 0;
 }
 
-u32 CString::GetLength() const {
+i32 CString::GetLength() const {
     return this->m_length;
 }
 
