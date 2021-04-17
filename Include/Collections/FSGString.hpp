@@ -110,7 +110,7 @@ public:
     void TrimRight();
 
     // Todo: Write documentation for CString::operator static_string()
-    operator static_string() const;
+    explicit operator static_string() const;
 
     // Todo: Write documentation for CString::operator==()
     i32 operator==(static_string t_string) const;

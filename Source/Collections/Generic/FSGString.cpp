@@ -264,3 +264,49 @@ void CString::StringCopy(string t_target, u32 t_targetCapacity, static_string t_
     strncpy_s(t_target, t_targetCapacity, t_source, t_targetCapacity - 1);
     t_target[t_targetCapacity - 1] = 0;
 }
+
+void CString::TrimLeft() {
+    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+
+    // This is referenced in the assert statements, but omitted in the actual code.
+    auto offset = 0;
+    auto count = 0;
+
+    for (auto i = offset; i < this->m_length; i++) {
+        auto character = this->m_buffer[i];
+        if (character == ' ' || character == '\t' || character == '\n' || character == '\r') {
+            count++;
+        } else {
+            break;
+        }
+    }
+
+    if (count > 0) {
+        this->Delete(offset, count);
+    }
+}
+
+void CString::TrimRight() {
+    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+
+    // This is referenced in the assert statements, but omitted in the actual code.
+    auto offset = 0;
+    auto count = 0;
+
+    for (auto i = this->m_length - 1; i > offset; i--) {
+        auto character = this->m_buffer[i];
+        if (character == ' ' || character == '\t' || character == '\n' || character == '\r') {
+            count++;
+        } else {
+            break;
+        }
+    }
+
+    if (count > 0) {
+        this->Delete(m_length - (count + 1), count);
+    }
+}
+
+CString::operator static_string() const {
+    return this->m_buffer;
+}
