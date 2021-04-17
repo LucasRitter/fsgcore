@@ -62,10 +62,10 @@ void CFilePath::GetFileName(const CString &t_string) {
         CString::StringCopy(this->m_buffer, this->m_capacity, t_string.GetBuffer());
         this->m_length = t_string.GetLength();
     } else {
-        if (index + 1 == this->m_length) {
+        if (index + 1 == t_string.GetLength()) {
             this->Clear();
         } else {
-            this->Extract(t_string, index + 1, this->m_length - (index + 1));
+            this->Extract(t_string, index + 1, t_string.GetLength() - (index + 1));
         }
     }
 }
