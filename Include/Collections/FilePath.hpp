@@ -4,18 +4,21 @@
 
 class CFilePath: public CFixedString<256> {
 public:
-    CFilePath(const CFilePath &t_from);
+    CFilePath(CFilePath const &t_from);
     explicit CFilePath(static_string t_from);
 
-    void GetFilePath(const class CString &t_string);
+    ~CFilePath();
 
-    CFilePath *GetFileExtension(CString const &);
+    void GetFilePath(const CString &t_string);
+    CFilePath *GetFilePath();
+
+    void GetFileExtension(CString const &t_string);
     CFilePath *GetFileExtension();
 
-    CFilePath *GetFileName(CString const &);
+    void GetFileName(const CString &);
     CFilePath *GetFileName();
 
-    CFilePath *GetFileNameWithoutExtension(CString const &);
+    void GetFileNameWithoutExtension(const CString &);
     CFilePath *GetFileNameWithoutExtension();
 
     i32 HasFileExtension();
