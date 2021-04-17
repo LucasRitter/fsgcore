@@ -25,4 +25,6 @@ public:
     void SetFileExtension(static_string t_extension);
 
     i32 ValidatePath();
+
+    static i32 IsValidCharacter(character character);
 };
