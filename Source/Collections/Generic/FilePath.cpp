@@ -146,6 +146,7 @@ CFilePath *CFilePath::GetFileNameWithoutExtension() {
     }
 
     path->Extract(*this, startIndex, length);
+    return path;
 }
 
 i32 CFilePath::HasFileExtension() {
