@@ -1,7 +1,9 @@
 #include <cstring>
+#include <cstdio>
 
 #include <Core/FSGAssert.hpp>
 #include <Collections/FSGString.hpp>
+#include <cstdarg>
 
 CString::CString() {
     m_static = false;
@@ -309,4 +311,11 @@ void CString::TrimRight() {
 
 CString::operator static_string() const {
     return this->m_buffer;
+}
+
+void CString::FormatString(string t_target, u32 t_targetCapacity, static_string t_source, ...) {
+    va_list args;
+    va_start(args, t_source);
+    vsprintf_s(t_target, t_targetCapacity, t_source, args);
+    va_end(args);
 }
