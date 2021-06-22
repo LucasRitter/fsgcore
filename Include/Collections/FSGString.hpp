@@ -2,14 +2,14 @@
 
 #include "Primitives.hpp"
 
-class CString
+class String
 {
     protected:
     bool   isStatic;
     string buffer;
     i32    capacity;
     i32    length;
-    CString();
+    String();
 
     public:
     /**
@@ -64,13 +64,13 @@ class CString
      */
     i32 Find(string text, i32 offset) const;
 
-    // Todo: Write documentation for CString::ReverseFind
+    // Todo: Write documentation for String::ReverseFind
     i32 ReverseFind(static_string text, i32 offset) const;
 
-    // Todo: Write documentation for CString::ReverseFind
+    // Todo: Write documentation for String::ReverseFind
     i32 ReverseFind(character character, i32 offset) const;
 
-    // Todo: Write documentation for CString::Remove
+    // Todo: Write documentation for String::Remove
     // a1 seems to be completely irrelevant.
     void Remove(char a1);
 
@@ -88,10 +88,10 @@ class CString
      */
     void Replace(character find, character replacement);
 
-    // Todo: Write documentation for CString::ReplaceSingleChar
+    // Todo: Write documentation for String::ReplaceSingleChar
     void ReplaceSingleChar(character replacement, u32 offset);
 
-    // Todo: Write documentation for CString::Reverse
+    // Todo: Write documentation for String::Reverse
     void Reverse();
 
     /**
@@ -104,30 +104,30 @@ class CString
      */
     void ToLower();
 
-    // Todo: Write documentation for CString::TrimLeft
+    // Todo: Write documentation for String::TrimLeft
     void TrimLeft();
 
-    // Todo: Write documentation for CString::TrimRight
+    // Todo: Write documentation for String::TrimRight
     void TrimRight();
 
-    // Todo: Write documentation for CString::operator static_string()
+    // Todo: Write documentation for String::operator static_string()
     explicit operator static_string() const;
 
-    // Todo: Write documentation for CString::operator==()
+    // Todo: Write documentation for String::operator==()
     i32 operator==(static_string text) const;
 
-    // Todo: Write documentation for CString::operator!=()
+    // Todo: Write documentation for String::operator!=()
     i32 operator!=(static_string text) const;
 
     // Todo: Write documentation for virtual functions.
-    virtual void Append(const class CString& text)             = 0;
-    virtual void Append(static_string text)                    = 0;
-    virtual void Format(static_string format, ...)               = 0;
-    virtual void Insert(static_string text, u32 offset)        = 0;
-    virtual void Insert(const class CString& text, u32 format) = 0;
-    virtual void Insert(character character, u32 offset)         = 0;
+    virtual void Append(const class String& text)             = 0;
+    virtual void Append(static_string text)                   = 0;
+    virtual void Format(static_string format, ...)            = 0;
+    virtual void Insert(static_string text, u32 offset)       = 0;
+    virtual void Insert(const class String& text, u32 format) = 0;
+    virtual void Insert(character character, u32 offset)      = 0;
 
-    // Todo: Implement CString static methods.
+    // Todo: Implement String static methods.
     static void StringCopy(string target, u32 targetCapacity, static_string source);
     static void StringCopyLength(string target, u32 targetCapacity, static_string source, u32 sourceLength);
     static void FormatString(string target, u32 targetCapacity, static_string source, ...);

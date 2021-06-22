@@ -1,12 +1,12 @@
 #include "Collections/FilePath.hpp"
 
-CFilePath::CFilePath(const CFilePath& from) : CFixedString<256>(from) {}
+FilePath::FilePath(const FilePath& from) : FixedString<256>(from) {}
 
-CFilePath::CFilePath(static_string from) : CFixedString<256>(from) {}
+FilePath::FilePath(static_string from) : FixedString<256>(from) {}
 
-CFilePath::~CFilePath() = default;
+FilePath::~FilePath() = default;
 
-void CFilePath::GetFilePath(const CString& text)
+void FilePath::GetFilePath(const String& text)
 {
     // Todo: Switch based on operating system. Windows = '\\', UNIX = '/'.
     auto index = text.ReverseFind('\\', 0);
@@ -21,7 +21,7 @@ void CFilePath::GetFilePath(const CString& text)
     }
 }
 
-CFilePath* CFilePath::GetFilePath()
+FilePath* FilePath::GetFilePath()
 {
     auto index = this->ReverseFind('\\', 0);
 
@@ -30,13 +30,13 @@ CFilePath* CFilePath::GetFilePath()
         return nullptr;
     }
 
-    auto path = new CFilePath("");
+    auto path = new FilePath("");
     path->Extract(*this, 0, index + 1);
 
     return path;
 }
 
-void CFilePath::GetFileExtension(const CString& text)
+void FilePath::GetFileExtension(const String& text)
 {
     auto index  = text.ReverseFind('.', 0);
     auto length = text.GetLength() - (index + 1);
@@ -54,7 +54,7 @@ void CFilePath::GetFileExtension(const CString& text)
     }
 }
 
-CFilePath* CFilePath::GetFileExtension()
+FilePath* FilePath::GetFileExtension()
 {
     auto index  = this->ReverseFind('.', 0);
     auto length = this->GetLength() - (index + 1);
@@ -67,19 +67,19 @@ CFilePath* CFilePath::GetFileExtension()
         return nullptr;
     }
 
-    auto path = new CFilePath("");
+    auto path = new FilePath("");
     path->Extract(*this, index + 1, length);
 
     return path;
 }
 
-void CFilePath::GetFileName(const CString& t_string)
+void FilePath::GetFileName(const String& t_string)
 {
     auto index = t_string.ReverseFind('\\', 0);
     if(index == -1)
     {
         this->Clear();
-        CString::StringCopy(this->buffer, this->capacity, t_string.GetBuffer());
+        String::StringCopy(this->buffer, this->capacity, t_string.GetBuffer());
         this->length = t_string.GetLength();
     }
     else
@@ -95,10 +95,10 @@ void CFilePath::GetFileName(const CString& t_string)
     }
 }
 
-CFilePath* CFilePath::GetFileName()
+FilePath* FilePath::GetFileName()
 {
     auto index = this->ReverseFind('\\', 0);
-    auto path  = new CFilePath("");
+    auto path  = new FilePath("");
 
     if(index == -1) return path;
 
@@ -106,7 +106,7 @@ CFilePath* CFilePath::GetFileName()
     return path;
 }
 
-void CFilePath::GetFileNameWithoutExtension(const CString& t_string)
+void FilePath::GetFileNameWithoutExtension(const String& t_string)
 {
     auto startIndex = t_string.ReverseFind('\\', 0);
     auto endIndex   = t_string.ReverseFind('.', 0);
@@ -145,13 +145,13 @@ void CFilePath::GetFileNameWithoutExtension(const CString& t_string)
     this->Extract(t_string, startIndex, length);
 }
 
-CFilePath* CFilePath::GetFileNameWithoutExtension()
+FilePath* FilePath::GetFileNameWithoutExtension()
 {
     auto startIndex = this->ReverseFind('\\', 0);
     auto endIndex   = this->ReverseFind('.', 0);
     auto length     = 0;
 
-    auto path = new CFilePath("");
+    auto path = new FilePath("");
 
     if(startIndex != -1)
     {
@@ -186,7 +186,7 @@ CFilePath* CFilePath::GetFileNameWithoutExtension()
     return path;
 }
 
-i32 CFilePath::HasFileExtension()
+i32 FilePath::HasFileExtension()
 {
     auto separatorIndex = this->ReverseFind('.', 0);
     auto directoryIndex = this->ReverseFind('\\', 0);
@@ -199,7 +199,7 @@ i32 CFilePath::HasFileExtension()
     return true;
 }
 
-void CFilePath::SetFileExtension(static_string extension)
+void FilePath::SetFileExtension(static_string extension)
 {
     // Custom implementation. Differs from original.
 
@@ -230,11 +230,11 @@ void CFilePath::SetFileExtension(static_string extension)
     this->Append(extension);
 }
 
-i32 CFilePath::ValidatePath()
+i32 FilePath::ValidatePath()
 {
     for(auto i = 0; i < this->length; i++)
     {
-        if(!CFilePath::IsValidCharacter(this->buffer[i]))
+        if(!FilePath::IsValidCharacter(this->buffer[i]))
         {
             FSG_ASSERT(false, "'%s' contains invalid file characters.", this->buffer);
             return false;
@@ -244,7 +244,7 @@ i32 CFilePath::ValidatePath()
     return true;
 }
 
-i32 CFilePath::IsValidCharacter(character character)
+i32 FilePath::IsValidCharacter(character character)
 {
     if((character < 'a' || character > 'z') && (character < 'A' || character > 'Z') && character != '\\' && character != '_' && character != '-' &&
        character != '.' && character != ' ')

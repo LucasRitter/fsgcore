@@ -53,5 +53,5 @@ class CFile
     static void InstallCallbacks(EFile_Source source);
 
     protected:
-    i32 InternalOpen(class CFilePath& path, EFile_Access access);
+    i32 InternalOpen(class FilePath& path, EFile_Access access);
 };

@@ -23,7 +23,7 @@ void FSGLogInit(static_string logFileName, u32 logToFile, u32 logToConsole)
     if(logToFile && logFileName)
     {
         FSG_ASSERT(strlen(logFileName) > 0, "Logging has no file name defined (ie logFileName = '\\0')");
-        CString::FormatString(gLogFileName, LOGFILE_NAME_MAX_LENGTH, "%s", logFileName);
+        String::FormatString(gLogFileName, LOGFILE_NAME_MAX_LENGTH, "%s", logFileName);
         gLogToFile = true;
     }
     else

@@ -5,7 +5,7 @@
 #include "Core/FSGAssert.hpp"
 #include "Collections/FSGString.hpp"
 
-CString::CString()
+String::String()
 {
     isStatic = false;
     buffer   = nullptr;
@@ -13,17 +13,17 @@ CString::CString()
     length   = 0;
 }
 
-i32 CString::GetLength() const
+i32 String::GetLength() const
 {
     return this->length;
 }
 
-string CString::GetBuffer() const
+string String::GetBuffer() const
 {
     return this->buffer;
 }
 
-void CString::Clear()
+void String::Clear()
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -31,21 +31,21 @@ void CString::Clear()
     this->length  = 0;
 }
 
-i32 CString::Compare(static_string text)
+i32 String::Compare(static_string text)
 {
     FSG_ASSERT(text != nullptr, "Supplied text pointer for comparison was NULL.");
 
     return strcmp(this->buffer, text);
 }
 
-i32 CString::CompareNoCase(static_string text)
+i32 String::CompareNoCase(static_string text)
 {
     FSG_ASSERT(text != nullptr, "Supplied text pointer for invariant comparison was NULL.");
 
     return _stricmp(this->buffer, text);
 }
 
-void CString::Delete(u32 index, u32 count)
+void String::Delete(u32 index, u32 count)
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
     FSG_ASSERT((index + count) <= this->length, "Parameters extend beyond the end of the string.");
@@ -70,7 +70,7 @@ void CString::Delete(u32 index, u32 count)
     this->buffer[newLength] = 0;
 }
 
-i32 CString::Find(static_string text, i32 offset) const
+i32 String::Find(static_string text, i32 offset) const
 {
     FSG_ASSERT(text != nullptr, "Supplied text pointer was NULL.");
 
@@ -102,7 +102,7 @@ i32 CString::Find(static_string text, i32 offset) const
     return foundIndex;
 }
 
-i32 CString::Find(string text, i32 offset) const
+i32 String::Find(string text, i32 offset) const
 {
     FSG_ASSERT(text != nullptr, "Supplied text pointer was NULL.");
 
@@ -134,9 +134,9 @@ i32 CString::Find(string text, i32 offset) const
     return foundIndex;
 }
 
-i32 CString::ReverseFind(static_string text, i32 offset) const
+i32 String::ReverseFind(static_string text, i32 offset) const
 {
-    // Fixme: Implement CString::ReverseFind()
+    // Fixme: Implement String::ReverseFind()
     FSG_ASSERT(text != nullptr, "Supplied text pointer was NULL");
 
     auto searchLength = strlen(text);
@@ -188,10 +188,10 @@ i32 CString::ReverseFind(static_string text, i32 offset) const
     return result;
 }
 
-i32 CString::ReverseFind(character character, i32 offset) const
+i32 String::ReverseFind(character character, i32 offset) const
 {
     // For some reason, this function is also implemented differently
-    // to the other functions in the CString class. Outdated?
+    // to the other functions in the String class. Outdated?
 
     if(!this->length)
     {
@@ -213,7 +213,7 @@ i32 CString::ReverseFind(character character, i32 offset) const
     return -1;
 }
 
-void CString::Remove(char a1)
+void String::Remove(char a1)
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -231,7 +231,7 @@ void CString::Remove(char a1)
     this->length        = index;
 }
 
-void CString::Replace(static_string find, static_string replacement)
+void String::Replace(static_string find, static_string replacement)
 {
     auto findStringLength = strlen(find);
     auto toDelete         = findStringLength - 1;
@@ -243,7 +243,7 @@ void CString::Replace(static_string find, static_string replacement)
     }
 }
 
-void CString::Replace(character find, character replacement)
+void String::Replace(character find, character replacement)
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -256,7 +256,7 @@ void CString::Replace(character find, character replacement)
     }
 }
 
-void CString::ReplaceSingleChar(character replacement, u32 offset)
+void String::ReplaceSingleChar(character replacement, u32 offset)
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
     FSG_ASSERT(offset < this->length, "Offset is outside string bounds.");
@@ -264,7 +264,7 @@ void CString::ReplaceSingleChar(character replacement, u32 offset)
     this->buffer[offset] = replacement;
 }
 
-void CString::Reverse()
+void String::Reverse()
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -287,7 +287,7 @@ void CString::Reverse()
     }
 }
 
-void CString::ToUpper()
+void String::ToUpper()
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -300,7 +300,7 @@ void CString::ToUpper()
     }
 }
 
-void CString::ToLower()
+void String::ToLower()
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -313,7 +313,7 @@ void CString::ToLower()
     }
 }
 
-void CString::StringCopy(string target, u32 targetCapacity, static_string source)
+void String::StringCopy(string target, u32 targetCapacity, static_string source)
 {
     auto sourceLength = strlen(source);
 
@@ -323,7 +323,7 @@ void CString::StringCopy(string target, u32 targetCapacity, static_string source
     target[targetCapacity - 1] = 0;
 }
 
-void CString::TrimLeft()
+void String::TrimLeft()
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -350,7 +350,7 @@ void CString::TrimLeft()
     }
 }
 
-void CString::TrimRight()
+void String::TrimRight()
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
@@ -377,12 +377,12 @@ void CString::TrimRight()
     }
 }
 
-CString::operator static_string() const
+String::operator static_string() const
 {
     return this->buffer;
 }
 
-void CString::FormatString(string target, u32 targetCapacity, static_string source, ...)
+void String::FormatString(string target, u32 targetCapacity, static_string source, ...)
 {
     va_list args;
     va_start(args, source);

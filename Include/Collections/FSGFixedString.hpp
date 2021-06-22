@@ -7,14 +7,14 @@
 #include "Core/FSGAssert.hpp"
 
 template<u32 t_size>
-class CFixedString : public CString
+class FixedString : public String
 {
     public:
     /**
      * Creates a new instance of a fixed length string from @b text.
      * @param text The original string.
      */
-    explicit CFixedString(const class CString& text)
+    explicit FixedString(const class String& text)
     {
         this->capacity = t_size;
 
@@ -22,56 +22,56 @@ class CFixedString : public CString
 
         this->length = text.GetLength();
         this->buffer = reinterpret_cast<string>(malloc(t_size));
-        CString::StringCopy(this->buffer, t_size, text.GetBuffer());
+        String::StringCopy(this->buffer, t_size, text.GetBuffer());
     }
 
     /**
      * Creates a new instance of a fixed length string from @b text.
      * @param text The original string.
      */
-    CFixedString(const class CFixedString<t_size>& text)
+    FixedString(const class FixedString<t_size>& text)
     {
         this->capacity = t_size;
 
         this->length = text.GetLength();
         this->buffer = reinterpret_cast<string>(malloc(t_size));
-        CString::StringCopy(this->buffer, t_size, text.GetBuffer());
+        String::StringCopy(this->buffer, t_size, text.GetBuffer());
     }
 
     /**
      * Creates a new instance of a fixed length string from @b text.
      * @param text The original string.
      */
-    explicit CFixedString(static_string text)
+    explicit FixedString(static_string text)
     {
         this->capacity = t_size;
 
         this->length = strlen(text);
         this->buffer = reinterpret_cast<string>(malloc(t_size));
-        CString::StringCopy(this->buffer, t_size, text);
+        String::StringCopy(this->buffer, t_size, text);
     }
 
-    // Todo: Write documentation for CFixedString::Append
-    void Append(const class CString& text) override
+    // Todo: Write documentation for FixedString::Append
+    void Append(const class String& text) override
     {
         auto totalLength = this->length + text.GetLength() + 1;
         FSG_ASSERT(totalLength <= this->capacity, "String being added is too long to fit into available buffer.");
-        CString::StringCopy(&this->buffer[this->length], this->capacity, text.GetBuffer());
+        String::StringCopy(&this->buffer[this->length], this->capacity, text.GetBuffer());
         this->length += text.GetLength();
     }
 
-    // Todo: Write documentation for CFixedString::Append
+    // Todo: Write documentation for FixedString::Append
     void Append(static_string text) override
     {
         auto stringLength = strlen(text);
         auto totalLength  = this->length + stringLength + 1;
         FSG_ASSERT(totalLength <= this->capacity, "String being added is too long to fit into available buffer.");
-        CString::StringCopy(&this->buffer[this->length], this->capacity - this->length, text);
+        String::StringCopy(&this->buffer[this->length], this->capacity - this->length, text);
         this->length += stringLength;
     }
 
-    // Todo: Write documentation for CFixedString::Extract
-    void Extract(const class CString& text, i32 offset, i32 length)
+    // Todo: Write documentation for FixedString::Extract
+    void Extract(const class String& text, i32 offset, i32 length)
     {
         FSG_ASSERT(offset >= 0 && offset < text.GetLength(), "Extraction point is outside the bounds of the source string.");
         FSG_ASSERT(length >= 0, "Negative extraction lengths are not supported.");
@@ -87,27 +87,27 @@ class CFixedString : public CString
         this->length         = length;
     }
 
-    // Todo: Write documentation for CFixedString::Format
+    // Todo: Write documentation for FixedString::Format
     void Format(static_string format, ...) override
     {
-        // Todo: Implement CFixedString::Format
+        // Todo: Implement FixedString::Format
     }
 
-    // Todo: Write documentation for CFixedString::Insert
+    // Todo: Write documentation for FixedString::Insert
     void Insert(static_string text, u32 offset) override
     {
-        // Todo: Implement CFixedString::Insert
+        // Todo: Implement FixedString::Insert
     }
 
-    // Todo: Write documentation for CFixedString::Insert
-    void Insert(const class CString& text, u32 offset) override
+    // Todo: Write documentation for FixedString::Insert
+    void Insert(const class String& text, u32 offset) override
     {
-        // Todo: Implement CFixedString::Insert
+        // Todo: Implement FixedString::Insert
     }
 
-    // Todo: Write documentation for CFixedString::Insert
+    // Todo: Write documentation for FixedString::Insert
     void Insert(character character, u32 offset) override
     {
-        // Todo: Implement CFixedString::Insert
+        // Todo: Implement FixedString::Insert
     }
 };

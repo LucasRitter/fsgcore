@@ -10,7 +10,7 @@ namespace FSGSystem
      * Container for Time and Date.
      * @note This closely resembles the standard tm struct, but with 16 byte values, instead of 32.
      */
-    struct SFSGTimeAndDate
+    struct FSGTimeAndDate
     {
         public:
         i16 seconds;
@@ -20,9 +20,9 @@ namespace FSGSystem
         i16 month;
         i16 year;
 
-        static int CompareDates(const SFSGTimeAndDate& dateA, const SFSGTimeAndDate& dateB);
+        static int CompareDates(const FSGTimeAndDate& dateA, const FSGTimeAndDate& dateB);
 
-        bool operator<(const SFSGTimeAndDate& date) const;
+        bool operator<(const FSGTimeAndDate& date) const;
     };
 
     /**
@@ -30,14 +30,14 @@ namespace FSGSystem
      * @param fsgDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetTimeAndDate(SFSGTimeAndDate& fsgDate);
+    void FSGGetTimeAndDate(FSGTimeAndDate& fsgDate);
 
     /**
      * Fills the given @b buildDate with the build time and date.
      * @param buildDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetBuildDateAndTime(SFSGTimeAndDate& buildDate);
+    void FSGGetBuildDateAndTime(FSGTimeAndDate& buildDate);
 
 #pragma endregion
 

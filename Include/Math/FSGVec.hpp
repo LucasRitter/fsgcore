@@ -2,10 +2,10 @@
 
 #include "Primitives.hpp"
 
-class CVec
+class Vec
 {
     public:
-    CVec();
+    Vec();
 
     f32 x;
     f32 y;
@@ -16,11 +16,11 @@ class CVec
     f32 Length3() const;
     f32 Length4() const;
 
-    bool              operator!=(const class CVec& vec);
-    const class CVec& operator/=(const f32& factor);
-    const class CVec& operator/(const f32& factor);
-    const class CVec& operator*=(const f32& factor);
-    const class CVec& operator*(const f32& factor);
+    bool             operator!=(const class Vec& vec);
+    const class Vec& operator/=(const f32& factor);
+    const class Vec& operator/(const f32& factor);
+    const class Vec& operator*=(const f32& factor);
+    const class Vec& operator*(const f32& factor);
 
     void Mul3(const class CMatrix& matrix);
     void Mul4(const class CMatrix& matrix);
@@ -33,7 +33,7 @@ class CVec
     f32 NormaliseToLargestComponent3();
     f32 NormaliseToLargestComponent4();
 
-    static i8 PointIntersect3Plane(class CVec& a, class CVec& b, class CVec& c, class CVec& d);
+    static i8 PointIntersect3Plane(class Vec& a, class Vec& b, class Vec& c, class Vec& d);
 };
 
-static const CVec& operator/(const class CVec& vec, const f32& factor);
+static const Vec& operator/(const class Vec& vec, const f32& factor);
