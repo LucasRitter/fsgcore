@@ -1,13 +1,13 @@
 #include <ctime>
 
-#include <System/FSGSystem.hpp>
+#include "System/FSGSystem.hpp"
 
 #pragma region Time and Date
 
-int FSGSystem::SFSGTimeAndDate::CompareDates(const SFSGTimeAndDate& t_dateA, const SFSGTimeAndDate& t_dateB)
+int FSGSystem::SFSGTimeAndDate::CompareDates(const SFSGTimeAndDate& dateA, const SFSGTimeAndDate& dateB)
 {
-    if(t_dateA.m_year != t_dateB.m_year || t_dateA.m_month != t_dateB.m_month || t_dateA.m_day != t_dateB.m_day || t_dateA.m_hour != t_dateB.m_hour ||
-       t_dateA.m_minutes != t_dateB.m_minutes || t_dateA.m_seconds != t_dateB.m_seconds)
+    if(dateA.year != dateB.year || dateA.month != dateB.month || dateA.day != dateB.day || dateA.hour != dateB.hour ||
+       dateA.minutes != dateB.minutes || dateA.seconds != dateB.seconds)
     {
         return 0;
     }
@@ -15,30 +15,30 @@ int FSGSystem::SFSGTimeAndDate::CompareDates(const SFSGTimeAndDate& t_dateA, con
     return 1;
 }
 
-bool FSGSystem::SFSGTimeAndDate::operator<(const SFSGTimeAndDate& t_date) const
+bool FSGSystem::SFSGTimeAndDate::operator<(const SFSGTimeAndDate& date) const
 {
-    if(this->m_year < t_date.m_year)
+    if(this->year < date.year)
     {
         return true;
     }
-    if(this->m_month < t_date.m_month)
+    if(this->month < date.month)
     {
         return true;
     }
-    if(this->m_day < t_date.m_day)
+    if(this->day < date.day)
     {
         return true;
     }
 
-    if(this->m_hour < t_date.m_hour)
+    if(this->hour < date.hour)
     {
         return true;
     }
-    if(this->m_minutes < t_date.m_minutes)
+    if(this->minutes < date.minutes)
     {
         return true;
     }
-    if(this->m_seconds < t_date.m_seconds)
+    if(this->seconds < date.seconds)
     {
         return true;
     }
@@ -46,7 +46,7 @@ bool FSGSystem::SFSGTimeAndDate::operator<(const SFSGTimeAndDate& t_date) const
     return false;
 }
 
-void FSGSystem::FSGGetTimeAndDate(SFSGTimeAndDate& t_date)
+void FSGSystem::FSGGetTimeAndDate(SFSGTimeAndDate& fsgDate)
 {
     struct tm date
     {
@@ -55,16 +55,16 @@ void FSGSystem::FSGGetTimeAndDate(SFSGTimeAndDate& t_date)
 
     localtime_s(&date, &now);
 
-    t_date.m_year  = static_cast<i16>(date.tm_year);
-    t_date.m_month = static_cast<i16>(date.tm_mon);
-    t_date.m_day   = static_cast<i16>(date.tm_mday);
+    fsgDate.year  = static_cast<i16>(date.tm_year);
+    fsgDate.month = static_cast<i16>(date.tm_mon);
+    fsgDate.day   = static_cast<i16>(date.tm_mday);
 
-    t_date.m_hour    = static_cast<i16>(date.tm_hour);
-    t_date.m_minutes = static_cast<i16>(date.tm_min);
-    t_date.m_seconds = static_cast<i16>(date.tm_sec);
+    fsgDate.hour    = static_cast<i16>(date.tm_hour);
+    fsgDate.minutes = static_cast<i16>(date.tm_min);
+    fsgDate.seconds = static_cast<i16>(date.tm_sec);
 }
 
-void FSGSystem::FSGGetBuildDateAndTime(SFSGTimeAndDate& t_buildDate)
+void FSGSystem::FSGGetBuildDateAndTime(SFSGTimeAndDate& buildDate)
 {
     // Todo: FSGSystem::FSGGetBuildTimeAndDate
 }

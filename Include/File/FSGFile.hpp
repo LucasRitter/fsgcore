@@ -3,7 +3,7 @@
 #include "Primitives.hpp"
 
 #pragma region Callback Definitions
-typedef i32             FileExistsCb(static_string t_path, void*);
+typedef i32             FileExistsCb(static_string path, void*);
 typedef u64             FileSizeCb(class CFile*, void*);
 
 class CFile
@@ -34,24 +34,24 @@ class CFile
 
     public:
     CFile();
-    CFile(EFile_Device t_device);
+    CFile(EFile_Device device);
     ~CFile();
 
-    i32  Open(static_string t_string, EFile_Access t_access);
+    i32  Open(static_string path, EFile_Access access);
     void Close();
 
-    i32 Exists(static_string t_path);
+    i32 Exists(static_string path);
     u32 GetSize() const;
 
-    u64  Read(void* t_buffer, u64 t_length);
+    u64  Read(void* buffer, u64 length);
     void Write();
     void ReadAhead();
-    void StepBufferBytes(u8 t_bytes);
+    void StepBufferBytes(u8 bytes);
 
     u8* GetFileBuffer();
 
-    static void InstallCallbacks(EFile_Source t_source);
+    static void InstallCallbacks(EFile_Source source);
 
     protected:
-    i32 InternalOpen(class CFilePath& t_path, EFile_Access t_access);
+    i32 InternalOpen(class CFilePath& path, EFile_Access access);
 };

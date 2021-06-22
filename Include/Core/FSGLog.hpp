@@ -5,14 +5,14 @@
 #define LOGFILE_NAME_MAX_LENGTH 0x200
 #define LOG_TEXT_MAX_LENGTH     0x800
 
-extern u32  g_logInitialised;
-extern u32  g_logToConsole;
-extern u32  g_logToFile;
-extern char g_logFileName[LOGFILE_NAME_MAX_LENGTH];
-extern u64  g_logInitTime;
+extern u32  gLogInitialised;
+extern u32  gLogToConsole;
+extern u32  gLogToFile;
+extern char gLogFileName[LOGFILE_NAME_MAX_LENGTH];
+extern u64  gLogInitTime;
 
-void FSGLogInit(static_string t_logFileName, u32 t_logToFile, u32 t_logToConsole);
-void FSGDoLog(static_string t_logText, ...);
-void FSGDoLogDirect(static_string t_logText);
-void FSGLogPrefix(static_string t_category, static_string t_format, string t_args);
+void FSGLogInit(static_string logFileName, u32 logToFile, u32 logToConsole);
+void FSGDoLog(static_string logText, ...);
+void FSGDoLogDirect(static_string logText);
+void FSGLogPrefix(static_string category, static_string format, string args);
 void FSGLogDestroy();
