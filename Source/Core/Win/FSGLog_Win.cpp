@@ -8,42 +8,42 @@
     #include "Core/FSGLog.hpp"
     #include "File/FSGFile.hpp"
 
-u32  gLogInitialised = false;
-u32  gLogToConsole   = false;
-u32  gLogToFile      = false;
-char gLogFileName[LOGFILE_NAME_MAX_LENGTH];
-u64  gLogInitTime = 0;
+u32       isInitialised = false;
+u32       toConsole     = false;
+u32       toFile        = false;
+character fileName[LOGFILE_NAME_MAX_LENGTH];
+u64       initTime = 0;
 
 void FSGLogInit(static_string logFileName, u32 logToFile, u32 logToConsole)
 {
     // Original implementation used 32bit tick count.
-    gLogInitTime  = GetTickCount64();
-    gLogToConsole = logToConsole;
+    initTime  = GetTickCount64();
+    toConsole = logToConsole;
 
     if(logToFile && logFileName)
     {
         FSG_ASSERT(strlen(logFileName) > 0, "Logging has no file name defined (ie logFileName = '\\0')");
-        String::FormatString(gLogFileName, LOGFILE_NAME_MAX_LENGTH, "%s", logFileName);
-        gLogToFile = true;
+        String::FormatString(fileName, LOGFILE_NAME_MAX_LENGTH, "%s", logFileName);
+        toFile = true;
     }
     else
     {
-        gLogToFile      = false;
-        gLogFileName[0] = 0;
+        toFile      = false;
+        fileName[0] = 0;
     }
 
-    gLogInitialised = true;
+    isInitialised = true;
 
-    if(gLogToFile)
+    if(toFile)
     {
         auto logFile = new CFile();
-        if(logFile->Open(gLogFileName, CFile::EFile_Access::EFile_Access_1))
+        if(logFile->Open(fileName, CFile::EFile_Access::EFile_Access_1))
         {
             logFile->Close();
         }
         else
         {
-            gLogToFile = false;
+            toFile = false;
         }
         delete logFile;
     }
@@ -51,25 +51,25 @@ void FSGLogInit(static_string logFileName, u32 logToFile, u32 logToConsole)
 
 void FSGDoLog(static_string logText, ...)
 {
-    if(gLogInitialised)
+    if(isInitialised)
     {
         FSG_ASSERT(logText, nullptr);
 
-        char buffer[LOG_TEXT_MAX_LENGTH];
+        character buffer[LOG_TEXT_MAX_LENGTH];
 
         va_list args;
         va_start(args, logText);
         vsprintf_s(buffer, LOG_TEXT_MAX_LENGTH - 2, logText, args);
         va_end(args);
 
-        if(gLogToConsole)
+        if(toConsole)
         {
             OutputDebugStringA(buffer);
         }
 
-        if(gLogToFile)
+        if(toFile)
         {
-            auto handle = CreateFileA(gLogFileName, 0x40000000, 0, nullptr, 3, 0x80, nullptr);
+            auto handle = CreateFileA(fileName, 0x40000000, 0, nullptr, 3, 0x80, nullptr);
             if(handle != INVALID_HANDLE_VALUE)
             {
                 SetFilePointer(handle, 0, nullptr, 2);

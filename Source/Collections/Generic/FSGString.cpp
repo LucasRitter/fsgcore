@@ -213,7 +213,7 @@ i32 String::ReverseFind(character character, i32 offset) const
     return -1;
 }
 
-void String::Remove(char a1)
+void String::Remove(character a1)
 {
     FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 

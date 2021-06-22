@@ -72,7 +72,7 @@ class String
 
     // Todo: Write documentation for String::Remove
     // a1 seems to be completely irrelevant.
-    void Remove(char a1);
+    void Remove(character a1);
 
     /**
      * Finds @b find in @b buffer and replaces it with @b replacement.
