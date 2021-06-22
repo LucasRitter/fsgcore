@@ -1,28 +1,29 @@
 #pragma once
 
-#include <Collections/FSGFixedString.hpp>
+#include "Collections/FSGFixedString.hpp"
 
-class CFilePath: public CFixedString<256> {
-public:
-    CFilePath(CFilePath const &t_from);
-    explicit CFilePath(static_string t_from);
+class FilePath : public FixedString<256>
+{
+    public:
+    FilePath(FilePath const& from);
+    explicit FilePath(static_string from);
 
-    ~CFilePath();
+    ~FilePath();
 
-    void GetFilePath(const CString &t_string);
-    CFilePath *GetFilePath();
+    void      GetFilePath(const String& text);
+    FilePath* GetFilePath();
 
-    void GetFileExtension(CString const &t_string);
-    CFilePath *GetFileExtension();
+    void      GetFileExtension(String const& text);
+    FilePath* GetFileExtension();
 
-    void GetFileName(const CString &);
-    CFilePath *GetFileName();
+    void      GetFileName(const String&);
+    FilePath* GetFileName();
 
-    void GetFileNameWithoutExtension(const CString &);
-    CFilePath *GetFileNameWithoutExtension();
+    void      GetFileNameWithoutExtension(const String&);
+    FilePath* GetFileNameWithoutExtension();
 
-    i32 HasFileExtension();
-    void SetFileExtension(static_string t_extension);
+    i32  HasFileExtension();
+    void SetFileExtension(static_string extension);
 
     i32 ValidatePath();
 

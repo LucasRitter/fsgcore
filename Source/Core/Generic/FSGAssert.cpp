@@ -1,25 +1,22 @@
-#include <Core/FSGAssert.hpp>
-
 #include <cstdio>
 #include <cstdarg>
 #include <cstdlib>
 
-void FSGAssert(bool t_truthy, static_string t_function, static_string t_fileName, i32 t_line, static_string t_expression, static_string t_message, ...) {
-    if (t_truthy) {
-        return;
-    }
+#include "Core/FSGAssert.hpp"
 
-    printf_s("ERROR:\n  %s\n  %s\n  %s:%d\n  ", t_expression, t_function, t_fileName, t_line);
+void FSGAssert(bool truthy, static_string function, static_string fileName, i32 line, static_string expression, static_string message, ...)
+{
+    if(truthy) return;
 
-    if (t_message == nullptr) {
-        std::abort();
-    }
+    printf_s("ERROR:\n  %s\n  %s\n  %s:%d\n  ", expression, function, fileName, line);
+
+    if(message == nullptr) std::abort();
 
     va_list args;
-    va_start(args, t_message);
+    va_start(args, message);
 
     auto buffer = reinterpret_cast<string>(malloc(0x800));
-    vsprintf_s(buffer, 0x800, t_message, args);
+    vsprintf_s(buffer, 0x800, message, args);
 
     // Temporary fix for an issue with stdout buffering and CLion on Windows.
     setbuf(stdout, nullptr);

@@ -1,82 +1,98 @@
 #include <cstring>
 #include <cstdio>
-
-#include <Core/FSGAssert.hpp>
-#include <Collections/FSGString.hpp>
 #include <cstdarg>
 
-CString::CString() {
-    m_static = false;
-    m_buffer = nullptr;
-    m_capacity = 0;
-    m_length = 0;
+#include "Core/FSGAssert.hpp"
+#include "Collections/FSGString.hpp"
+
+String::String()
+{
+    isStatic = false;
+    buffer   = nullptr;
+    capacity = 0;
+    length   = 0;
 }
 
-i32 CString::GetLength() const {
-    return this->m_length;
+i32 String::GetLength() const
+{
+    return this->length;
 }
 
-string CString::GetBuffer() const {
-    return this->m_buffer;
+string String::GetBuffer() const
+{
+    return this->buffer;
 }
 
-void CString::Clear() {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::Clear()
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
-    *this->m_buffer = 0;
-    this->m_length = 0;
+    *this->buffer = 0;
+    this->length  = 0;
 }
 
-i32 CString::Compare(static_string t_string) {
-    FSG_ASSERT(t_string != nullptr, "Supplied string pointer for comparison was NULL.");
+i32 String::Compare(static_string text)
+{
+    FSG_ASSERT(text != nullptr, "Supplied text pointer for comparison was NULL.");
 
-    return strcmp(this->m_buffer, t_string);
+    return strcmp(this->buffer, text);
 }
 
-i32 CString::CompareNoCase(static_string t_string) {
-    FSG_ASSERT(t_string != nullptr, "Supplied string pointer for invariant comparison was NULL.");
+i32 String::CompareNoCase(static_string text)
+{
+    FSG_ASSERT(text != nullptr, "Supplied text pointer for invariant comparison was NULL.");
 
-    return _stricmp(this->m_buffer, t_string);
+    return _stricmp(this->buffer, text);
 }
 
-void CString::Delete(u32 t_index, u32 t_count) {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
-    FSG_ASSERT((t_index + t_count) <= this->m_length, "Parameters extend beyond the end of the string.");
+void String::Delete(u32 index, u32 count)
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
+    FSG_ASSERT((index + count) <= this->length, "Parameters extend beyond the end of the string.");
 
-    auto currentIndex = t_index;
-    auto newLength = this->m_length - t_count;
+    auto currentIndex = index;
+    auto newLength    = this->length - count;
 
     // Todo: Find good names for v10, v11.
     // Todo: Rewrite to use for loop instead of while.
-    if (t_index < newLength) {
-        auto v10 = newLength - t_index;
-        do {
-            auto v11 = &this->m_buffer[currentIndex++];
-            *v11 = v11[t_count];
+    if(index < newLength)
+    {
+        auto v10 = newLength - index;
+        do
+        {
+            auto v11 = &this->buffer[currentIndex++];
+            *v11     = v11[count];
             --v10;
-        } while (v10);
+        } while(v10);
     }
 
-    this->m_length = newLength;
-    this->m_buffer[newLength] = 0;
+    this->length            = newLength;
+    this->buffer[newLength] = 0;
 }
 
-i32 CString::Find(static_string t_string, i32 t_offset) const {
-    FSG_ASSERT(t_string != nullptr, "Supplied string pointer was NULL.");
+i32 String::Find(static_string text, i32 offset) const
+{
+    FSG_ASSERT(text != nullptr, "Supplied text pointer was NULL.");
 
-    auto stringLength = strlen(t_string);
-    auto remaining = this->m_length - stringLength + 1;
+    auto stringLength = strlen(text);
+    auto remaining    = this->length - stringLength + 1;
 
     auto foundIndex = -1;
 
-    if (stringLength <= this->m_length && t_offset < remaining) {
-        for (auto i = t_offset; i < remaining; i++) {
-            if (*t_string == this->m_buffer[i]) {
-                foundIndex = i;
-                auto isDifferent = strcmp(&this->m_buffer[i], t_string);
-                if (isDifferent) {
+    if(stringLength <= this->length && offset < remaining)
+    {
+        for(auto i = offset; i < remaining; i++)
+        {
+            if(*text == this->buffer[i])
+            {
+                foundIndex       = i;
+                auto isDifferent = strcmp(&this->buffer[i], text);
+                if(isDifferent)
+                {
                     foundIndex = -1;
-                } else {
+                }
+                else
+                {
                     break;
                 }
             }
@@ -86,22 +102,29 @@ i32 CString::Find(static_string t_string, i32 t_offset) const {
     return foundIndex;
 }
 
-i32 CString::Find(string t_string, i32 t_offset) const {
-    FSG_ASSERT(t_string != nullptr, "Supplied string pointer was NULL.");
+i32 String::Find(string text, i32 offset) const
+{
+    FSG_ASSERT(text != nullptr, "Supplied text pointer was NULL.");
 
-    auto stringLength = strlen(t_string);
-    auto remaining = this->m_length - stringLength - 1;
+    auto stringLength = strlen(text);
+    auto remaining    = this->length - stringLength - 1;
 
     auto foundIndex = -1;
 
-    if (stringLength <= this->m_length && t_offset < remaining) {
-        for (auto i = t_offset; i < remaining; i++) {
-            if (*t_string == this->m_buffer[i]) {
-                foundIndex = i;
-                auto isDifferent = strcmp(&this->m_buffer[i], t_string);
-                if (isDifferent) {
+    if(stringLength <= this->length && offset < remaining)
+    {
+        for(auto i = offset; i < remaining; i++)
+        {
+            if(*text == this->buffer[i])
+            {
+                foundIndex       = i;
+                auto isDifferent = strcmp(&this->buffer[i], text);
+                if(isDifferent)
+                {
                     foundIndex = -1;
-                } else {
+                }
+                else
+                {
                     break;
                 }
             }
@@ -111,64 +134,78 @@ i32 CString::Find(string t_string, i32 t_offset) const {
     return foundIndex;
 }
 
-i32 CString::ReverseFind(static_string t_string, i32 t_offset) const {
-    // Fixme: Implement CString::ReverseFind()
-    FSG_ASSERT(t_string != nullptr, "Supplied string pointer was NULL");
+i32 String::ReverseFind(static_string text, i32 offset) const
+{
+    // Fixme: Implement String::ReverseFind()
+    FSG_ASSERT(text != nullptr, "Supplied text pointer was NULL");
 
-    auto searchLength = strlen(t_string);
+    auto searchLength = strlen(text);
 
-    auto indexOfLastBufferCharacter = this->m_length - 1;
+    auto indexOfLastBufferCharacter = this->length - 1;
     auto indexOfLastSearchCharacter = searchLength - 1;
 
     auto result = -1;
 
-    if (indexOfLastSearchCharacter && indexOfLastSearchCharacter < this->m_length) {
-        if (t_offset < indexOfLastSearchCharacter - 1) {
-            t_offset = indexOfLastSearchCharacter - 1;
+    if(indexOfLastSearchCharacter && indexOfLastSearchCharacter < this->length)
+    {
+        if(offset < indexOfLastSearchCharacter - 1)
+        {
+            offset = indexOfLastSearchCharacter - 1;
         }
 
-        if (t_offset < indexOfLastBufferCharacter) {
-            auto v15 = indexOfLastBufferCharacter - t_offset;
+        if(offset < indexOfLastBufferCharacter)
+        {
+            auto v15 = indexOfLastBufferCharacter - offset;
 
-            do {
-                if (result != -1) {
+            do
+            {
+                if(result != -1)
+                {
                     break;
                 }
 
-                if (*t_string == this->m_buffer[indexOfLastBufferCharacter - t_offset]) {
+                if(*text == this->buffer[indexOfLastBufferCharacter - offset])
+                {
                     result = v15;
-                    for (auto i = 1; result != -1; i++) {
-                        if (i >= indexOfLastSearchCharacter) {
+                    for(auto i = 1; result != -1; i++)
+                    {
+                        if(i >= indexOfLastSearchCharacter)
+                        {
                             break;
                         }
-                        if (this->m_buffer[i + result] != t_string[i]) {
+                        if(this->buffer[i + result] != text[i])
+                        {
                             result = -1;
                         }
                     }
                 }
-                t_offset++;
+                offset++;
                 v15++;
-            } while (t_offset < indexOfLastBufferCharacter);
+            } while(offset < indexOfLastBufferCharacter);
         }
     }
 
     return result;
 }
 
-i32 CString::ReverseFind(character t_char, i32 t_offset) const {
+i32 String::ReverseFind(character character, i32 offset) const
+{
     // For some reason, this function is also implemented differently
-    // to the other functions in the CString class. Outdated?
+    // to the other functions in the String class. Outdated?
 
-    if (!this->m_length) {
+    if(!this->length)
+    {
         return -1;
     }
 
-    FSG_ASSERT(t_offset >= 0 && t_offset < this->m_length, "Start offset is outside the bounds of the string.");
+    FSG_ASSERT(offset >= 0 && offset < this->length, "Start offset is outside the bounds of the string.");
 
     // Custom implementation starting here.
     // Original was not fun.
-    for (auto i = this->m_length - 1; i >= t_offset; i--) {
-        if (this->m_buffer[i] == t_char) {
+    for(auto i = this->length - 1; i >= offset; i--)
+    {
+        if(this->buffer[i] == character)
+        {
             return i;
         }
     }
@@ -176,146 +213,179 @@ i32 CString::ReverseFind(character t_char, i32 t_offset) const {
     return -1;
 }
 
-void CString::Remove(char a1) {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::Remove(character a1)
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
     auto index = 0;
-    for (auto i = 0; i < this->m_length; i++) {
-        auto character = this->m_buffer[i];
-        if (character != '-') {
-            this->m_buffer[index++] = character;
+    for(auto i = 0; i < this->length; i++)
+    {
+        auto character = this->buffer[i];
+        if(character != '-')
+        {
+            this->buffer[index++] = character;
         }
     }
 
-    this->m_buffer[index] = 0;
-    this->m_length = index;
+    this->buffer[index] = 0;
+    this->length        = index;
 }
 
-void CString::Replace(static_string t_find, static_string t_replacement) {
-    auto findStringLength = strlen(t_find);
-    auto toDelete = findStringLength - 1;
+void String::Replace(static_string find, static_string replacement)
+{
+    auto findStringLength = strlen(find);
+    auto toDelete         = findStringLength - 1;
 
-    for (auto i = this->Find(t_find, 0); i != -1; i = this->Find(t_find, 0)) {
+    for(auto i = this->Find(find, 0); i != -1; i = this->Find(find, 0))
+    {
         this->Delete(i, toDelete);
-        this->Insert(t_replacement, i);
+        this->Insert(replacement, i);
     }
 }
 
-void CString::Replace(character t_find, character t_replacement) {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::Replace(character find, character replacement)
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
-    for (auto i = 0; i < this->m_length; i++) {
-        if (this->m_buffer[i] == t_find) {
-            this->m_buffer[i] = t_replacement;
+    for(auto i = 0; i < this->length; i++)
+    {
+        if(this->buffer[i] == find)
+        {
+            this->buffer[i] = replacement;
         }
     }
 }
 
-void CString::ReplaceSingleChar(character t_replacement, u32 t_offset) {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
-    FSG_ASSERT(t_offset < this->m_length, "Offset is outside string bounds.");
+void String::ReplaceSingleChar(character replacement, u32 offset)
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
+    FSG_ASSERT(offset < this->length, "Offset is outside string bounds.");
 
-    this->m_buffer[t_offset] = t_replacement;
+    this->buffer[offset] = replacement;
 }
 
-void CString::Reverse() {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::Reverse()
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
-    auto steps = this->m_length >> 1;
-    if (steps) {
+    auto steps = this->length >> 1;
+    if(steps)
+    {
         auto i = 0;
-        auto j = this->m_length - 1;
+        auto j = this->length - 1;
 
-        do {
-            auto temp = this->m_buffer[i];
-            this->m_buffer[i] = m_buffer[j];
-            this->m_buffer[j] = temp;
+        do
+        {
+            auto temp       = this->buffer[i];
+            this->buffer[i] = buffer[j];
+            this->buffer[j] = temp;
 
             i++;
             j--;
             steps--;
-        } while (steps);
+        } while(steps);
     }
 }
 
-void CString::ToUpper() {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::ToUpper()
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
-    for (auto i = 0; i < this->m_length; i++) {
-        if (this->m_buffer[i] >= 'a' && this->m_buffer[i] <= 'z') {
-            this->m_buffer[i] -= 0x20;
+    for(auto i = 0; i < this->length; i++)
+    {
+        if(this->buffer[i] >= 'a' && this->buffer[i] <= 'z')
+        {
+            this->buffer[i] -= 0x20;
         }
     }
 }
 
-void CString::ToLower() {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::ToLower()
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
-    for (auto i = 0; i < this->m_length; i++) {
-        if (this->m_buffer[i] >= 'A' && this->m_buffer[i] <= 'Z') {
-            this->m_buffer[i] += 0x20;
+    for(auto i = 0; i < this->length; i++)
+    {
+        if(this->buffer[i] >= 'A' && this->buffer[i] <= 'Z')
+        {
+            this->buffer[i] += 0x20;
         }
     }
 }
 
-void CString::StringCopy(string t_target, u32 t_targetCapacity, static_string t_source) {
-    auto sourceLength = strlen(t_source);
+void String::StringCopy(string target, u32 targetCapacity, static_string source)
+{
+    auto sourceLength = strlen(source);
 
-    FSG_ASSERT(sourceLength < t_targetCapacity, "Source string is longer than target capacity.");
+    FSG_ASSERT(sourceLength < targetCapacity, "Source string is longer than target capacity.");
 
-    strncpy_s(t_target, t_targetCapacity, t_source, t_targetCapacity - 1);
-    t_target[t_targetCapacity - 1] = 0;
+    strncpy_s(target, targetCapacity, source, targetCapacity - 1);
+    target[targetCapacity - 1] = 0;
 }
 
-void CString::TrimLeft() {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::TrimLeft()
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
     // This is referenced in the assert statements, but omitted in the actual code.
     auto offset = 0;
-    auto count = 0;
+    auto count  = 0;
 
-    for (auto i = offset; i < this->m_length; i++) {
-        auto character = this->m_buffer[i];
-        if (character == ' ' || character == '\t' || character == '\n' || character == '\r') {
+    for(auto i = offset; i < this->length; i++)
+    {
+        auto character = this->buffer[i];
+        if(character == ' ' || character == '\t' || character == '\n' || character == '\r')
+        {
             count++;
-        } else {
+        }
+        else
+        {
             break;
         }
     }
 
-    if (count > 0) {
+    if(count > 0)
+    {
         this->Delete(offset, count);
     }
 }
 
-void CString::TrimRight() {
-    FSG_ASSERT(!this->m_static, "Statically allocated strings cannot be modified at run-time.");
+void String::TrimRight()
+{
+    FSG_ASSERT(!this->isStatic, "Statically allocated strings cannot be modified at run-time.");
 
     // This is referenced in the assert statements, but omitted in the actual code.
     auto offset = 0;
-    auto count = 0;
+    auto count  = 0;
 
-    for (auto i = this->m_length - 1; i > offset; i--) {
-        auto character = this->m_buffer[i];
-        if (character == ' ' || character == '\t' || character == '\n' || character == '\r') {
+    for(auto i = this->length - 1; i > offset; i--)
+    {
+        auto character = this->buffer[i];
+        if(character == ' ' || character == '\t' || character == '\n' || character == '\r')
+        {
             count++;
-        } else {
+        }
+        else
+        {
             break;
         }
     }
 
-    if (count > 0) {
-        this->Delete(m_length - (count + 1), count);
+    if(count > 0)
+    {
+        this->Delete(length - (count + 1), count);
     }
 }
 
-CString::operator static_string() const {
-    return this->m_buffer;
+String::operator static_string() const
+{
+    return this->buffer;
 }
 
-void CString::FormatString(string t_target, u32 t_targetCapacity, static_string t_source, ...) {
+void String::FormatString(string target, u32 targetCapacity, static_string source, ...)
+{
     va_list args;
-    va_start(args, t_source);
-    vsprintf_s(t_target, t_targetCapacity, t_source, args);
+    va_start(args, source);
+    vsprintf_s(target, targetCapacity, source, args);
     va_end(args);
 }

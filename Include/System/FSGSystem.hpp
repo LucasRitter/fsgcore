@@ -1,41 +1,43 @@
 #pragma once
 
-#include <Primitives.hpp>
+#include "Primitives.hpp"
 
-namespace FSGSystem {
+namespace FSGSystem
+{
 #pragma region Time and Date
 
     /**
      * Container for Time and Date.
      * @note This closely resembles the standard tm struct, but with 16 byte values, instead of 32.
      */
-    struct SFSGTimeAndDate {
-    public:
-        i16 m_seconds;
-        i16 m_minutes;
-        i16 m_hour;
-        u16 m_day;
-        u16 m_month;
-        u16 m_year;
+    struct FSGTimeAndDate
+    {
+        public:
+        i16 seconds;
+        i16 minutes;
+        i16 hour;
+        i16 day;
+        i16 month;
+        i16 year;
 
-        static int CompareDates(const SFSGTimeAndDate &t_dateA, const SFSGTimeAndDate &t_dateB);
+        static int CompareDates(const FSGTimeAndDate& dateA, const FSGTimeAndDate& dateB);
 
-        bool operator<(const SFSGTimeAndDate &t_date) const;
+        bool operator<(const FSGTimeAndDate& date) const;
     };
 
     /**
-     * Fills the given @b t_date with the current time and date.
-     * @param t_date The structure to fill.
+     * Fills the given @b fsgDate with the current time and fsgDate.
+     * @param fsgDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetTimeAndDate(SFSGTimeAndDate &t_date);
+    void FSGGetTimeAndDate(FSGTimeAndDate& fsgDate);
 
     /**
-     * Fills the given @b t_buildDate with the build time and date.
-     * @param t_buildDate The structure to fill.
+     * Fills the given @b buildDate with the build time and date.
+     * @param buildDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetBuildDateAndTime(SFSGTimeAndDate &t_buildDate);
+    void FSGGetBuildDateAndTime(FSGTimeAndDate& buildDate);
 
 #pragma endregion
 
@@ -105,12 +107,12 @@ namespace FSGSystem {
     /**
      * Unused.
      */
-    void *FSGCameraGetVideoBuffer(void *t_videoBuffer);
+    void* FSGCameraGetVideoBuffer(void* videoBuffer);
 
     /**
      * Unused.
      */
-    void FSGCameraGetResolution(i32 &t_width, i32 &t_height);
+    void FSGCameraGetResolution(i32& width, i32& height);
 
 #pragma endregion
-}
+}  // namespace FSGSystem

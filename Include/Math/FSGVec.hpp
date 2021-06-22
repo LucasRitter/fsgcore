@@ -1,26 +1,29 @@
-#include <Primitives.hpp>
+#pragma once
 
-class CVec {
-public:
-    CVec();
+#include "Primitives.hpp"
 
-    f32 m_x;
-    f32 m_y;
-    f32 m_z;
-    f32 m_w;
+class Vec
+{
+    public:
+    Vec();
+
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
 
     f32 Length2() const;
     f32 Length3() const;
     f32 Length4() const;
 
-    bool operator!=(const class CVec &t_vec);
-    const class CVec &operator/=(const f32 &t_factor);
-    const class CVec &operator/(const f32 &t_factor);
-    const class CVec &operator*=(const f32 &t_factor);
-    const class CVec &operator*(const f32 &t_factor);
+    bool             operator!=(const class Vec& vec);
+    const class Vec& operator/=(const f32& factor);
+    const class Vec& operator/(const f32& factor);
+    const class Vec& operator*=(const f32& factor);
+    const class Vec& operator*(const f32& factor);
 
-    void Mul3(const class CMatrix &t_matrix);
-    void Mul4(const class CMatrix &t_matrix);
+    void Mul3(const class CMatrix& matrix);
+    void Mul4(const class CMatrix& matrix);
 
     f32 Normalise2();
     f32 Normalise3();
@@ -30,7 +33,7 @@ public:
     f32 NormaliseToLargestComponent3();
     f32 NormaliseToLargestComponent4();
 
-    static i8 PointIntersect3Plane(class CVec &t_a, class CVec &t_b, class CVec &t_c, class CVec &t_d);
+    static i8 PointIntersect3Plane(class Vec& a, class Vec& b, class Vec& c, class Vec& d);
 };
 
-static const CVec &operator/(const class CVec &t_vec, const f32 &t_factor);
+static const Vec& operator/(const class Vec& vec, const f32& factor);
