@@ -1,26 +1,28 @@
 #pragma once
 
-#include <Primitives.hpp>
+#include "Primitives.hpp"
 
-namespace FSGSystem {
+namespace FSGSystem
+{
 #pragma region Time and Date
 
     /**
      * Container for Time and Date.
      * @note This closely resembles the standard tm struct, but with 16 byte values, instead of 32.
      */
-    struct SFSGTimeAndDate {
-    public:
+    struct SFSGTimeAndDate
+    {
+        public:
         i16 m_seconds;
         i16 m_minutes;
         i16 m_hour;
-        u16 m_day;
-        u16 m_month;
-        u16 m_year;
+        i16 m_day;
+        i16 m_month;
+        i16 m_year;
 
-        static int CompareDates(const SFSGTimeAndDate &t_dateA, const SFSGTimeAndDate &t_dateB);
+        static int CompareDates(const SFSGTimeAndDate& t_dateA, const SFSGTimeAndDate& t_dateB);
 
-        bool operator<(const SFSGTimeAndDate &t_date) const;
+        bool operator<(const SFSGTimeAndDate& t_date) const;
     };
 
     /**
@@ -28,14 +30,14 @@ namespace FSGSystem {
      * @param t_date The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetTimeAndDate(SFSGTimeAndDate &t_date);
+    void FSGGetTimeAndDate(SFSGTimeAndDate& t_date);
 
     /**
      * Fills the given @b t_buildDate with the build time and date.
      * @param t_buildDate The structure to fill.
      * @note Custom implementation. Differs from original fsgcore library.
      */
-    void FSGGetBuildDateAndTime(SFSGTimeAndDate &t_buildDate);
+    void FSGGetBuildDateAndTime(SFSGTimeAndDate& t_buildDate);
 
 #pragma endregion
 
@@ -105,12 +107,12 @@ namespace FSGSystem {
     /**
      * Unused.
      */
-    void *FSGCameraGetVideoBuffer(void *t_videoBuffer);
+    void* FSGCameraGetVideoBuffer(void* t_videoBuffer);
 
     /**
      * Unused.
      */
-    void FSGCameraGetResolution(i32 &t_width, i32 &t_height);
+    void FSGCameraGetResolution(i32& t_width, i32& t_height);
 
 #pragma endregion
-}
+}  // namespace FSGSystem

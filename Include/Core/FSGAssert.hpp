@@ -1,8 +1,6 @@
 #pragma once
 
-#include <Primitives.hpp>
-
-// Todo: Refactor to use C++20's Source_Location feature.
+#include "Primitives.hpp"
 
 /**
  * @deprecated Use FSG_ASSERT macro instead. This is the underlying function it calls.
@@ -16,7 +14,7 @@
  * @param ...
  * @note Custom implementation. Differs from original fsgcore library.
  */
-void FSGAssert(bool t_truthy, static_string t_function, static_string t_fileName, i32 t_line, static_string t_expression, static_string t_message, ...);
+void FSGAssert(
+  bool t_truthy, static_string t_function, static_string t_fileName, i32 t_line, static_string t_expression, static_string t_message, ...);
 
-#define FSG_ASSERT(EXPRESSION, MESSAGE, ...) \
-    FSGAssert(EXPRESSION, __FUNCTION__, __FILE__, __LINE__, #EXPRESSION, MESSAGE, __VA_ARGS__);
+#define FSG_ASSERT(EXPRESSION, MESSAGE, ...) FSGAssert(EXPRESSION, __FUNCTION__, __FILE__, __LINE__, #EXPRESSION, MESSAGE, __VA_ARGS__);

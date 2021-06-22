@@ -4,61 +4,68 @@
 
 #pragma region Time and Date
 
-int FSGSystem::SFSGTimeAndDate::CompareDates(const SFSGTimeAndDate &t_dateA,
-                                             const SFSGTimeAndDate &t_dateB) {
-    if (t_dateA.m_year != t_dateB.m_year
-        || t_dateA.m_month != t_dateB.m_month
-        || t_dateA.m_day != t_dateB.m_day
-        || t_dateA.m_hour != t_dateB.m_hour
-        || t_dateA.m_minutes != t_dateB.m_minutes
-        || t_dateA.m_seconds != t_dateB.m_seconds) {
+int FSGSystem::SFSGTimeAndDate::CompareDates(const SFSGTimeAndDate& t_dateA, const SFSGTimeAndDate& t_dateB)
+{
+    if(t_dateA.m_year != t_dateB.m_year || t_dateA.m_month != t_dateB.m_month || t_dateA.m_day != t_dateB.m_day || t_dateA.m_hour != t_dateB.m_hour ||
+       t_dateA.m_minutes != t_dateB.m_minutes || t_dateA.m_seconds != t_dateB.m_seconds)
+    {
         return 0;
     }
 
     return 1;
 }
 
-bool FSGSystem::SFSGTimeAndDate::operator<(const SFSGTimeAndDate &t_date) const {
-    if (this->m_year < t_date.m_year) {
+bool FSGSystem::SFSGTimeAndDate::operator<(const SFSGTimeAndDate& t_date) const
+{
+    if(this->m_year < t_date.m_year)
+    {
         return true;
     }
-    if (this->m_month < t_date.m_month) {
+    if(this->m_month < t_date.m_month)
+    {
         return true;
     }
-    if (this->m_day < t_date.m_day) {
+    if(this->m_day < t_date.m_day)
+    {
         return true;
     }
 
-    if (this->m_hour < t_date.m_hour) {
+    if(this->m_hour < t_date.m_hour)
+    {
         return true;
     }
-    if (this->m_minutes < t_date.m_minutes) {
+    if(this->m_minutes < t_date.m_minutes)
+    {
         return true;
     }
-    if (this->m_seconds < t_date.m_seconds) {
+    if(this->m_seconds < t_date.m_seconds)
+    {
         return true;
     }
 
     return false;
 }
 
-void FSGSystem::FSGGetTimeAndDate(SFSGTimeAndDate &t_date) {
-    struct tm date{};
+void FSGSystem::FSGGetTimeAndDate(SFSGTimeAndDate& t_date)
+{
+    struct tm date
+    {
+    };
     auto now = time(nullptr);
 
     localtime_s(&date, &now);
 
-    t_date.m_year = static_cast<u16>(date.tm_year);
-    t_date.m_month = static_cast<u16>(date.tm_mon);
-    t_date.m_day = static_cast<u16>(date.tm_mday);
+    t_date.m_year  = static_cast<i16>(date.tm_year);
+    t_date.m_month = static_cast<i16>(date.tm_mon);
+    t_date.m_day   = static_cast<i16>(date.tm_mday);
 
-    t_date.m_hour = static_cast<u16>(date.tm_hour);
-    t_date.m_minutes = static_cast<u16>(date.tm_min);
-    t_date.m_seconds = static_cast<u16>(date.tm_sec);
+    t_date.m_hour    = static_cast<i16>(date.tm_hour);
+    t_date.m_minutes = static_cast<i16>(date.tm_min);
+    t_date.m_seconds = static_cast<i16>(date.tm_sec);
 }
 
-
-void FSGSystem::FSGGetBuildDateAndTime(SFSGTimeAndDate &t_buildDate) {
+void FSGSystem::FSGGetBuildDateAndTime(SFSGTimeAndDate& t_buildDate)
+{
     // Todo: FSGSystem::FSGGetBuildTimeAndDate
 }
 
@@ -66,15 +73,18 @@ void FSGSystem::FSGGetBuildDateAndTime(SFSGTimeAndDate &t_buildDate) {
 
 #pragma region Game Information
 
-static_string FSGSystem::FSGGetBuildDateAsString() {
+static_string FSGSystem::FSGGetBuildDateAsString()
+{
     return __DATE__;
 }
 
-static_string FSGSystem::FSGGetBuildTimeAsString() {
+static_string FSGSystem::FSGGetBuildTimeAsString()
+{
     return __TIME__;
 }
 
-static_string FSGSystem::FSGGetGameName() {
+static_string FSGSystem::FSGGetGameName()
+{
 #ifdef FSG_GAME_NAME
     return FSG_GAME_NAME;
 #else
@@ -82,7 +92,8 @@ static_string FSGSystem::FSGGetGameName() {
 #endif
 }
 
-static_string FSGSystem::FSGGetGameNameShort() {
+static_string FSGSystem::FSGGetGameNameShort()
+{
 #ifdef FSG_GAME_NAME_SHORT
     return FSG_GAME_NAME_SHORT;
 #else
@@ -90,7 +101,8 @@ static_string FSGSystem::FSGGetGameNameShort() {
 #endif
 }
 
-i32 FSGSystem::FSGGetGameVersion() {
+i32 FSGSystem::FSGGetGameVersion()
+{
 #ifdef FSG_GAME_VERSION
     return FSG_GAME_VERSION;
 #else
@@ -100,12 +112,13 @@ i32 FSGSystem::FSGGetGameVersion() {
 
 #if defined(WIN32) || defined(WIN64) || defined(UNIX) || defined(MACOSX)
 
-u64 FSGSystem::FSGGetDiscordApplicationId() {
-#ifdef FSG_DISCORD_APPID
+u64 FSGSystem::FSGGetDiscordApplicationId()
+{
+    #ifdef FSG_DISCORD_APPID
     return FSG_DISCORD_APPID;
-#else
+    #else
     return 0;
-#endif
+    #endif
 }
 
 #endif

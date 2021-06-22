@@ -1,16 +1,17 @@
 #pragma once
 
-#include <Primitives.hpp>
+#include "Primitives.hpp"
 
-class CString {
-protected:
-    bool m_static;
+class CString
+{
+    protected:
+    bool   m_static;
     string m_buffer;
-    i32 m_capacity;
-    i32 m_length;
+    i32    m_capacity;
+    i32    m_length;
     CString();
 
-public:
+    public:
     /**
      * @return The length of the string.
      */
@@ -118,14 +119,13 @@ public:
     // Todo: Write documentation for CString::operator!=()
     i32 operator!=(static_string t_string) const;
 
-
     // Todo: Write documentation for virtual functions.
-    virtual void Append(const class CString &t_string) = 0;
-    virtual void Append(static_string t_string) = 0;
-    virtual void Format(static_string t_format, ...) = 0;
-    virtual void Insert(static_string t_string, u32 t_offset) = 0;
-    virtual void Insert(const class CString &t_string, u32 t_offset) = 0;
-    virtual void Insert(character, u32 t_offset) = 0;
+    virtual void Append(const class CString& t_string)               = 0;
+    virtual void Append(static_string t_string)                      = 0;
+    virtual void Format(static_string t_format, ...)                 = 0;
+    virtual void Insert(static_string t_string, u32 t_offset)        = 0;
+    virtual void Insert(const class CString& t_string, u32 t_offset) = 0;
+    virtual void Insert(character, u32 t_offset)                     = 0;
 
     // Todo: Implement CString static methods.
     static void StringCopy(string t_target, u32 t_targetCapacity, static_string t_source);
