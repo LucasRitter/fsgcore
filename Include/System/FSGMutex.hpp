@@ -42,6 +42,6 @@ class RecursiveMutex : public BaseMutex
     void LockMutex() override;
     void UnlockMutex() override;
 
-    u32 GetLockCount() const;
-    u64 GetThreadId() const;
+    [[nodiscard]] u32 GetLockCount() const;
+    [[nodiscard]] u64 GetThreadId() const;
 };
