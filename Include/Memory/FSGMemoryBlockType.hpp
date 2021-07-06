@@ -5,7 +5,7 @@
 enum MemoryBlockType
 {
     FREE     = 0x0,
-    DELETE   = 0x1,
+    DEL      = 0x1,
     FSG      = 0x2,
     STAGNANT = 0x3,
     INVALID  = 0x4,

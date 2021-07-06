@@ -13,7 +13,7 @@ typedef int(__cdecl* HeapAllocatedCallback)(class Heap*, u32);
 class Heap
 {
     private:
-    void*                 data;
+    u8*                   data;
     u32                   dataLength;
     static_string         name;
     class MemoryManager*  memoryManager;
@@ -35,7 +35,7 @@ class Heap
     u32                   peakMemoryAllocations;
     u32                   allocationsLocked;
     u32                   field0x50;
-    u32                   field0x54;
+    u32                   ignoreFailedALlocations;
     RecursiveMutex        mutex;
     HeapSnapshot          snapshots[MAX_SNAPSHOT_STACK_SIZE];
     HeapAllocatedCallback callback;
@@ -55,30 +55,33 @@ class Heap
     static void* operator new(size_t size);
     static void  operator delete(void* memory) noexcept;
 
-    void* Allocate(u32 size, u32 alignment, i32 a4, i32 useGlobalHeap, u32 a6, static_string a7);
-    void* Reallocate(void* oldBlock, u32 size, u32 alignment, i32 a5, u32 a6, static_string a7);
+    void* Allocate(u32 size, u32 alignment, i32 isArray, i32 useGlobalHeap, u32 a6, static_string a7);
+    void* Reallocate(void* oldBlock, u32 size, u32 alignment, i32 isArray, u32 a6, static_string a7);
     void  Free(void*, i32, u32, static_string);
 
-    void DumpAllocs(string);
+    // Not Implemented in-game
+    // void DumpAllocs(string);
     void DumpStatistics();
 
-    void SetAllocationAlignment(u32);
+    void SetAllocationAlignment(u32 alignment);
 
-    static class Heap* GetMemoryHeap(void*);
+    static class Heap* GetMemoryHeap(void* block);
 
     private:
-    string DetermineAlignedMemoryPoint(struct MemoryEntry*, u32, u32, u32, i32) const;
-    i32    CombineFreeBlocks(struct MemoryEntry*, struct MemoryEntry*);
+    u8* DetermineAlignedMemoryPoint(struct MemoryEntry* block, u32 length, u32 a4, u32 userAlignment, i32 a6) const;
+    i32 CombineFreeBlocks(struct MemoryEntry* blockA, struct MemoryEntry* blockB);
 
-    static void PrepareHeader(struct MemoryEntry*, Heap*, MemoryBlockType);
-    static void PrepareHeader_ChangeUsage(struct MemoryEntry*, MemoryBlockType);
+    static void PrepareHeader(struct MemoryEntry* entry, Heap* heap, MemoryBlockType type);
+    static void PrepareHeader_ChangeUsage(struct MemoryEntry* entry, MemoryBlockType type);
 
-    struct MemoryEntry* FindFreeBlock(u32, u32, i32) const;
-    u32                 CalculateMemoryRequired(struct MemoryEntry*, u32, u32, u32, i32) const;
+    [[nodiscard]] struct MemoryEntry* FindFreeBlock(u32 length, u32 alignment, i32 lastBlock) const;
+    u32                 CalculateMemoryRequired(struct MemoryEntry* block, u32 currentLength, u32 length, u32 alignment, i32 lastBlock) const;
 
-    void* InternalAllocate(u32, u32, u32, static_string, i32, i32);
+    void* InternalAllocate(u32 length, u32 alignment, u32 a4, static_string a5, i32 isArray, i32 useGlobalHeap);
     void  InternalFree(void*, u32, static_string, i32);
 
     void AddAllocatedBlock(struct MemoryEntry*);
     void AddFreeBlock(struct MemoryEntry*);
+
+    void RemoveAllocatedBlock(struct MemoryEntry*);
 };
