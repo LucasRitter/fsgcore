@@ -8,6 +8,8 @@
 #include "Memory/FSGMemoryEntry.hpp"
 #include "System/Thread_Common.hpp"
 
+MemoryManager* MemoryManager::singleton = nullptr;
+
 MemoryManager::MemoryManager() : ThreadMutex()
 {
     this->smallHeap                  = nullptr;
