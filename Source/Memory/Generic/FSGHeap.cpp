@@ -85,14 +85,23 @@ bool Heap::LockAllocations()
     return success;
 }
 
-void Heap::UnlockAllocations()
+bool Heap::UnlockAllocations()
 {
     CriticalSectionLock lock(&this->mutex);
+    auto successful = false;
 
     if(this->allocationsLocked)
     {
+        successful = true;
         this->allocationsLocked = false;
     }
+
+    return successful;
+}
+
+bool Heap::AreAllocationsLocked() const
+{
+    return this->allocationsLocked;
 }
 
 void Heap::AttachSibling(Heap* heap)
@@ -233,6 +242,21 @@ void Heap::SetAllocationAlignment(u32 alignment)
     {
         this->peakDefaultAlignment = alignment;
     }
+}
+
+Heap* Heap::GetNextHeap()
+{
+    return this->nextHeap;
+}
+
+static_string Heap::GetName()
+{
+    return this->name;
+}
+
+class MemoryManager& Heap::GetMemoryManager()
+{
+    return *this->memoryManager;
 }
 
 Heap* Heap::GetMemoryHeap(void* block)
@@ -656,7 +680,7 @@ void Heap::RemoveAllocatedBlock(struct MemoryEntry* block)
     if(block->next != nullptr) block->next->previous = block->previous;
 
     Heap::PrepareHeader_ChangeUsage(block, MemoryBlockType::FREE);
-    block->next = nullptr;
+    block->next     = nullptr;
     block->previous = nullptr;
 
     this->unalignedLength -= block->unalignedLength;

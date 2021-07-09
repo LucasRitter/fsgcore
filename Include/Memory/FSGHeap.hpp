@@ -46,7 +46,8 @@ class Heap
     ~Heap();
 
     bool LockAllocations();
-    void UnlockAllocations();
+    bool UnlockAllocations();
+    bool AreAllocationsLocked() const;
 
     void                AttachSibling(Heap* heap);
     class HeapSnapshot* PushSnapshot(static_string heapName, static_string previousHeapName, u32 previousIndex);
@@ -63,7 +64,10 @@ class Heap
     // void DumpAllocs(string);
     void DumpStatistics();
 
-    void SetAllocationAlignment(u32 alignment);
+    void                 SetAllocationAlignment(u32 alignment);
+    class Heap*          GetNextHeap();
+    static_string        GetName();
+    class MemoryManager& GetMemoryManager();
 
     static class Heap* GetMemoryHeap(void* block);
 
@@ -71,11 +75,11 @@ class Heap
     u8* DetermineAlignedMemoryPoint(struct MemoryEntry* block, u32 length, u32 a4, u32 userAlignment, i32 a6) const;
     i32 CombineFreeBlocks(struct MemoryEntry* blockA, struct MemoryEntry* blockB);
 
-    static void PrepareHeader(struct MemoryEntry* entry, Heap* heap, MemoryBlockType type);
+    static void PrepareHeader(struct MemoryEntry* entry, class Heap* heap, MemoryBlockType type);
     static void PrepareHeader_ChangeUsage(struct MemoryEntry* entry, MemoryBlockType type);
 
     [[nodiscard]] struct MemoryEntry* FindFreeBlock(u32 length, u32 alignment, i32 lastBlock) const;
-    u32                 CalculateMemoryRequired(struct MemoryEntry* block, u32 currentLength, u32 length, u32 alignment, i32 lastBlock) const;
+    u32 CalculateMemoryRequired(struct MemoryEntry* block, u32 currentLength, u32 length, u32 alignment, i32 lastBlock) const;
 
     void* InternalAllocate(u32 length, u32 alignment, u32 a4, static_string a5, i32 isArray, i32 useGlobalHeap);
     void  InternalFree(void* memory, u32 a3, static_string a4, i32 isArray);

@@ -40,7 +40,7 @@ class MemoryManager : public ThreadMutex
     class Heap* SetAllocHiHeap(class Heap* heap);
 
     void* Allocate(u32 dataLength, u32 alignment, i32 a3, i32 useGlobalHeap, u32 a5, static_string a6);
-    void* Free(void* heap, i32 a2, u32 a3, static_string a4);
+    void* Free(void* memory, i32 a2, u32 a3, static_string a4);
 
     bool LockAllocations();
     bool UnlockAllocations();
@@ -52,4 +52,7 @@ class MemoryManager : public ThreadMutex
 
     void AddHeap(class Heap* heap);
     void RemoveHeap(class Heap* heap);
+
+    private:
+    bool IsValidHeap(class Heap* heap);
 };
