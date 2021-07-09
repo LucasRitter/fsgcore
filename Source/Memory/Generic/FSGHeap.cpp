@@ -328,14 +328,14 @@ void Heap::PrepareHeader_ChangeUsage(MemoryEntry* entry, MemoryBlockType type)
             entry->blockType[0] = 'F';
             entry->blockType[1] = 'S';
             entry->blockType[2] = 'G';
-            entry->flag7 |= 1;
+            entry->flagAlive |= 1;
             break;
 
         case MemoryBlockType::STAGNANT:
             entry->blockType[0] = 'S';
             entry->blockType[1] = 'T';
             entry->blockType[2] = 'A';
-            entry->flag7 |= 1;
+            entry->flagAlive |= 1;
             break;
 
         default:
@@ -447,12 +447,12 @@ u32 Heap::CalculateMemoryRequired(MemoryEntry* block, u32 currentLength, u32 len
 
 void* Heap::InternalAllocate(u32 length, u32 alignment, u32 a4, static_string a5, i32 isArray, i32 useGlobalHeap)
 {
+    // Create section lock
+    CriticalSectionLock lock(&this->mutex);
+
     auto newEntry = MemoryEntry();
 
     FSG_ASSERT(length > 0, "Allocations of zero bytes not allowed")
-
-    // Create section lock
-    CriticalSectionLock lock(&this->mutex);
 
     // Enforce minimum alignment of 0x10 bytes
     if(alignment < 0x10) alignment = 0x10;
@@ -532,7 +532,7 @@ void* Heap::InternalAllocate(u32 length, u32 alignment, u32 a4, static_string a5
         newEntry.flag4            = true;
         newEntry.flagWarnOnDelete = true;
         newEntry.flagArray        = true;
-        newEntry.flag7            = true;
+        newEntry.flagAlive        = true;
 
         Heap::PrepareHeader(freeBlock, this, MemoryBlockType::INVALID);
         memcpy(&userMem - sizeof(MemoryEntry), &newEntry, sizeof(MemoryEntry));
@@ -550,4 +550,116 @@ void* Heap::InternalAllocate(u32 length, u32 alignment, u32 a4, static_string a5
 
     this->numFailedAllocationRequests++;
     return nullptr;
+}
+
+void Heap::InternalFree(void* memory, u32 a3, static_string a4, i32 isArray)
+{
+    // Create section lock
+    CriticalSectionLock lock(&this->mutex);
+
+    if(memory == nullptr) return;
+
+    auto memBlock = reinterpret_cast<MemoryEntry*>(reinterpret_cast<uintptr_t>(memory) - sizeof(MemoryEntry));
+
+    FSG_ASSERT(this == memBlock->heap, "[%s] - ERROR Attempt to free memory block was requested from the wrong heap.", this->name)
+    FSG_ASSERT(!memBlock->flagWarnOnDelete, "[%s] - Warn on delete : Memory delete of allocation deleted from %s(%d) : detected", this->name, a4)
+    FSG_ASSERT(!memBlock->flagAlive, "[%s] - ERROR An attempt was made to free a memory block that was already released.", this->name)
+    FSG_ASSERT(
+      !memBlock->flagArray, "[%s] - ERROR Memory block new/delete mismatch. Please check usage of new, new[] and delete, delete[].", this->name)
+
+    this->RemoveAllocatedBlock(memBlock);
+    if(memBlock != reinterpret_cast<MemoryEntry*>(memBlock->blockStart))
+    {
+        auto v17 = MemoryEntry{};
+        memcpy(&v17, memBlock, sizeof(MemoryEntry));
+        Heap::PrepareHeader(memBlock, this, MemoryBlockType::INVALID);
+        memBlock = reinterpret_cast<MemoryEntry*>(v17.blockStart);
+        memcpy(v17.blockStart, &v17, sizeof(MemoryEntry));
+    }
+    this->AddFreeBlock(memBlock);
+}
+
+void Heap::AddAllocatedBlock(struct MemoryEntry* block)
+{
+    this->liveAllocations++;
+    this->numSuccessfulAllocations++;
+    this->unalignedLength += block->dataLength;
+    this->totalMemoryAllocation += block->dataLength;
+    if(this->unalignedLength > this->peakDataLength) this->peakDataLength = this->unalignedLength;
+    if(this->totalMemoryAllocation > this->peakMemoryAllocations) this->peakMemoryAllocations = this->totalMemoryAllocation;
+
+    auto prevFirstBlock = this->firstAllocatedBlock;
+    block->previous     = nullptr;
+    block->next         = prevFirstBlock;
+    if(prevFirstBlock != nullptr) prevFirstBlock->previous = block;
+    this->firstAllocatedBlock = block;
+}
+
+void Heap::AddFreeBlock(struct MemoryEntry* freeBlock)
+{
+    FSG_ASSERT(freeBlock != nullptr, "A nullptr block was specified for addition to the Heap free list.")
+
+    freeBlock->next     = nullptr;
+    freeBlock->previous = nullptr;
+
+    MemoryEntry* v5;
+    auto         block = this->firstBlock;
+    if(block != nullptr)
+    {
+        while(freeBlock >= block)
+        {
+            if(!block->next)
+            {
+                freeBlock->previous = block;
+                block->next         = freeBlock;
+                this->freeBlocks++;
+                this->CombineFreeBlocks(block, freeBlock);
+                return;
+            }
+
+            v5    = block;
+            block = block->next;
+        }
+        if(v5 != nullptr)
+        {
+            v5->next = freeBlock;
+        }
+        else
+        {
+            this->firstBlock = freeBlock;
+        }
+
+        freeBlock->next     = block;
+        freeBlock->previous = v5;
+        block->previous     = freeBlock;
+        this->freeBlocks++;
+        this->CombineFreeBlocks(freeBlock, block);
+
+        if(v5 != nullptr)
+        {
+            block = v5;
+            this->CombineFreeBlocks(block, freeBlock);
+        }
+    }
+    else
+    {
+        this->firstBlock = freeBlock;
+        this->freeBlocks++;
+    }
+}
+
+void Heap::RemoveAllocatedBlock(struct MemoryEntry* block)
+{
+    FSG_ASSERT(block != nullptr, "A nullptr item was requested for removal from the Heap allocation list.")
+
+    if(block->previous != nullptr) block->previous->next = block->next;
+    if(block->next != nullptr) block->next->previous = block->previous;
+
+    Heap::PrepareHeader_ChangeUsage(block, MemoryBlockType::FREE);
+    block->next = nullptr;
+    block->previous = nullptr;
+
+    this->unalignedLength -= block->unalignedLength;
+    this->totalMemoryAllocation -= block->dataLength;
+    this->liveAllocations--;
 }

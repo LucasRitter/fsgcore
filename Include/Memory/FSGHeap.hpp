@@ -78,10 +78,10 @@ class Heap
     u32                 CalculateMemoryRequired(struct MemoryEntry* block, u32 currentLength, u32 length, u32 alignment, i32 lastBlock) const;
 
     void* InternalAllocate(u32 length, u32 alignment, u32 a4, static_string a5, i32 isArray, i32 useGlobalHeap);
-    void  InternalFree(void*, u32, static_string, i32);
+    void  InternalFree(void* memory, u32 a3, static_string a4, i32 isArray);
 
-    void AddAllocatedBlock(struct MemoryEntry*);
-    void AddFreeBlock(struct MemoryEntry*);
+    void AddAllocatedBlock(struct MemoryEntry* block);
+    void AddFreeBlock(struct MemoryEntry* freeBlock);
 
-    void RemoveAllocatedBlock(struct MemoryEntry*);
+    void RemoveAllocatedBlock(struct MemoryEntry* block);
 };

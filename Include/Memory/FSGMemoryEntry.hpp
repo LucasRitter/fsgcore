@@ -17,7 +17,7 @@ struct MemoryEntry
     u8           flag4            : 1;
     u8           flagWarnOnDelete : 1;
     u8           flagArray        : 1;
-    u8           flag7            : 1;
+    u8           flagAlive        : 1;
     u32          unalignedLength;
     u32          dataLength;
     u8*          blockStart;
