@@ -1,5 +1,6 @@
 #ifdef WIN32
     #include <cstdio>
+    #include <iostream>
 
     #include <Windows.h>
 
@@ -64,6 +65,7 @@ void FSGDoLog(static_string logText, ...)
 
         if(toConsole)
         {
+            std::cout << buffer;
             OutputDebugStringA(buffer);
         }
 
