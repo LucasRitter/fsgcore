@@ -28,7 +28,7 @@ Heap::Heap(void* memory, u32 length, static_string name, i32 shouldFill, i32 (*c
     this->totalMemoryAllocation       = 0;
     this->allocationsLocked           = 0;
     this->ignoreFailedALlocations     = 0;
-    this->mutex                       = RecursiveMutex();
+    this->mutex                       = *new RecursiveMutex();
 
     this->numLockedAllocations  = 0;
     this->peakDataLength        = 0;
