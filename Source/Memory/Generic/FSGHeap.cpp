@@ -68,7 +68,7 @@ Heap::~Heap()
     this->PopSnapshot();
     FSG_ASSERT(this->currentSnapshot != -1, "Snapshots not all popped from stack!");
     this->memoryManager->RemoveHeap(this);
-    this->mutex.~RecursiveMutex();
+    delete &(this->mutex);
 }
 
 bool Heap::LockAllocations()
