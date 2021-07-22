@@ -38,8 +38,13 @@ f32 FSGACos(const f32& x);
  */
 f32 FSGATan(const f32& x);
 
-// Todo: Implement FSGCosSin
-f32 FSGCosSin(f32&, f32&, const f32&);
+/**
+ * @param outCos The output cosine of the given angle @b in.
+ * @param outSin The output sine of the given angle @b in.
+ * @param in The input angle in radians.
+ * @return
+ */
+void FSGCosSin(f32& outCos, f32& outSin, const f32& in);
 
 // Todo: Implement FSGATan2
 f32 FSGATan2(f32, f32);

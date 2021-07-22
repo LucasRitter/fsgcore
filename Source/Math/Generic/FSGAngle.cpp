@@ -31,3 +31,9 @@ f32 FSGATan(const f32& x)
 {
     return atan(static_cast<f64>(x));
 }
+
+void FSGCosSin(f32& outCos, f32& outSin, const f32& in)
+{
+    outCos = cos(in);
+    outSin = sin(in);
+}
