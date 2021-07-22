@@ -6,6 +6,7 @@ class Vec
 {
     public:
     Vec();
+    Vec(const class Vec& vec);
 
     f32 x;
     f32 y;
@@ -16,14 +17,21 @@ class Vec
     f32 Length3() const;
     f32 Length4() const;
 
-    bool             operator!=(const class Vec& vec);
-    const class Vec& operator/=(const f32& factor);
-    const class Vec& operator/(const f32& factor);
-    const class Vec& operator*=(const f32& factor);
-    const class Vec& operator*(const f32& factor);
+    bool             operator!=(const class Vec& vec) const;
+    class Vec& operator/=(const f32& factor);
+    class Vec& operator/(const f32& factor) const;
+    class Vec& operator*=(const f32& factor);
+    class Vec& operator*(const f32& factor) const;
 
-    void Mul3(const class CMatrix& matrix);
-    void Mul4(const class CMatrix& matrix);
+    class Vec& operator+=(const class Vec& vec);
+    class Vec& operator+(const class Vec& vec) const;
+    class Vec& operator-=(const class Vec& vec);
+    class Vec& operator-(const class Vec& vec) const;
+
+    class Vec operator*(class Matrix const & mat);
+
+    void Mul3(const class Matrix& matrix);
+    void Mul4(const class Matrix& matrix);
 
     f32 Normalise2();
     f32 Normalise3();
@@ -33,7 +41,11 @@ class Vec
     f32 NormaliseToLargestComponent3();
     f32 NormaliseToLargestComponent4();
 
-    static i8 PointIntersect3Plane(class Vec& a, class Vec& b, class Vec& c, class Vec& d);
-};
+    [[nodiscard]] f32              Dot(const class Vec& vec) const;
+    [[nodiscard]] const class Vec& Cross3(const class Vec& vec) const;
 
-static const Vec& operator/(const class Vec& vec, const f32& factor);
+    static i8 PointIntersect3Plane(class Vec& plane0, class Vec& plane1, class Vec& plane2, class Vec& point);
+
+    private:
+    [[nodiscard]] f32 FindLargestComponent() const;
+};
